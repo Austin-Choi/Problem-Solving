@@ -26,6 +26,7 @@ int my_binary_search(int n, int target) {
 }
 
 int main() {
+	//cin 속도 향상
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 	cin >> n;
@@ -39,7 +40,9 @@ int main() {
 	cin >> m;
 	for (int i = 0; i < m; i++) {
 		cin >> tmp;
+		//endl 대신 "\n"으로 속도 향상
 		cout << my_binary_search(n, tmp) << "\n";
+		
 		//stl binary_serach
 		//if (binary_search(nums, nums + n, tmp)) {
 		//	cout << 1 << endl;
