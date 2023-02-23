@@ -20,6 +20,6 @@ from (select car_id, car_type, daily_fee from car_rental_company_car where car_t
     join (select history_id, car_id, datediff(end_date, start_date)+1 as rentaldays
          from car_rental_company_rental_history) b 
     on a.car_id = b.car_id
-group by HISTORY_ID
+group by history_id
 order by FEE desc, HISTORY_ID desc
 ;
