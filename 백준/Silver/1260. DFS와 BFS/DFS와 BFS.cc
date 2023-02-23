@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 #include <string.h>
 #include <queue>
 #include <algorithm>
@@ -14,6 +15,7 @@ void bfs(int tmp) {
 	queue<int> q;
 	q.push(tmp);
 	visit[tmp] = true;
+
 	while (!q.empty()) {
 		int x = q.front();
 		q.pop();
@@ -22,6 +24,7 @@ void bfs(int tmp) {
 		for (size_t i = 0; i < vec[x].size(); i++) {
 			if (!visit[vec[x][i]]){
 				q.push(vec[x][i]);
+				//cout << vec[x][i] << " ";
 				visit[vec[x][i]] = true;
 			}
 				
@@ -34,10 +37,33 @@ void dfs(int x) {
 	v_dfs.push_back(x);
 
 	for (size_t i = 0; i < vec[x].size(); i++) {
-		if (!visit[vec[x][i]])
+		if (!visit[vec[x][i]]) {
+			//cout << vec[x][i] << " ";
 			dfs(vec[x][i]);
+		}
 	}
 }
+
+void dfs2(int tmp) {
+	stack<int> stk;
+	stk.push(tmp);
+	visit[tmp] = true;
+	v_dfs.push_back(tmp);
+
+	while (!stk.empty()) {
+		int x = stk.top();
+		stk.pop();
+		
+		
+		for (size_t i = 0; i < vec[x].size(); i++) {
+			if (!visit[vec[x][i]]) {
+				stk.push(x);
+				visit[vec[x][i]] = true;
+			}
+		}
+	}
+}
+
 
 int main() {
 	int n, m, v, a, b;
