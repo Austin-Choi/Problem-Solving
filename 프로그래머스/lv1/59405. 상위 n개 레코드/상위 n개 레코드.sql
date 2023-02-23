@@ -1,0 +1,10 @@
+-- 코드를 입력하세요
+
+SELECT NAME
+FROM ANIMAL_INS
+WHERE DATETIME = 
+    (SELECT MIN(DATETIME)
+    FROM ANIMAL_INS)
+-- ORDER BY DATETIME ASC LIMIT 1
+-- 오름차순으로 정렬해서 상위 1개만 뽑아내기 where절 생략
+;
