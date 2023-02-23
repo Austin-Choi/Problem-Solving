@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-long long dp[45];
+long dp[45];
 
 int main() {
 	ios::sync_with_stdio(false);
