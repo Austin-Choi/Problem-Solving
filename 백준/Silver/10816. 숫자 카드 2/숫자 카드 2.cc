@@ -25,8 +25,8 @@ int main() {
 	int tmp;
 	for (int i = 0; i < n; i++) {
 		cin >> tmp;
-		//vec_n.push_back(tmp);
-		map[tmp]++;
+		vec_n.push_back(tmp);
+		//map[tmp]++;
 	}
 	
 	sort(vec_n.begin(), vec_n.end());
@@ -38,8 +38,8 @@ int main() {
 		//lower_bound() 주어진 값보다 크거나 같은 첫번째 원소의 위치를 시퀀스에서 찾는다
 		//upper_bound() 주어진 값보다 큰 첫번째 원소의 위치를 시퀀스에서 찾는다. 
 		//equal_range() lower_bound()와 upper_bound()의 결과를 모두 담은 pair을 리턴
-		//cout << lower_bound(vec_n.begin(), vec_n.end(), tmp) - upper_bound(vec_n.begin(), vec_n.end(), tmp) << " ";
-		cout << map[tmp] << " ";
+		cout << upper_bound(vec_n.begin(), vec_n.end(), tmp) - lower_bound(vec_n.begin(), vec_n.end(), tmp) << " ";
+		//cout << map[tmp] << " ";
 	}
 	return 0;
 }
