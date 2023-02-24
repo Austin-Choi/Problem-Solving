@@ -6,7 +6,7 @@ int map[501][501];
 // dp[x][y] = a, (x,y)좌표 까지의 조건에 부합하는 경로 가짓수
 int dp[501][501] = { 0, };
 bool visit[501][501] = { 0, };
-//상하좌우
+//하좌우
 int dx[4] = { -1,1,0,0 };
 int dy[4] = { 0,0,-1,1 };
 
@@ -33,7 +33,6 @@ int dfs(int x, int y) {
 	for (int k = 0; k < 4; k++) {
 		int nx = x + dx[k];
 		int ny = y + dy[k];
-
 		if (nx > 0 && ny > 0 && nx <= m && ny <= n) {
 			if (map[x][y] > map[nx][ny]) {
 				dp[x][y] += dfs(nx, ny);
