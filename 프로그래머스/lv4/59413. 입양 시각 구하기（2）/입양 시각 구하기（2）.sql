@@ -7,7 +7,7 @@
 -- group by hour
 -- order by hour
 
-set @hour := -1;
+set @hour = -1;
 
 select (@hour := @hour + 1) as hour,
     (select count(hour(datetime)) 
