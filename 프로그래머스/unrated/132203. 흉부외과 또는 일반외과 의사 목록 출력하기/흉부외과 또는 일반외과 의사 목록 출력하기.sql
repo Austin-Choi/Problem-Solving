@@ -1,7 +1,5 @@
 -- 코드를 입력하세요
--- DATE_FORMAT, 다중조건 ORDER BY
-SELECT DR_NAME, DR_ID, MCDP_CD, DATE_FORMAT(HIRE_YMD,'%Y-%m-%d') AS HIRE_YMD
-FROM DOCTOR
-WHERE MCDP_CD = 'CS' OR MCDP_CD = 'GS'
-ORDER BY HIRE_YMD DESC, DR_NAME ASC
-;
+select dr_name, dr_id, mcdp_cd, to_char(hire_ymd, 'YYYY"-"MM"-"DD') as HIRE_YMD
+from doctor
+where mcdp_cd in ('CS', 'GS')
+order by hire_ymd desc, dr_name;
