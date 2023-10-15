@@ -32,8 +32,7 @@ public class Main {
         board[x][y] = 2; //청소 했다는 의미
         
         for(int i = 0; i < 4; i++) {
-            dir -= 1; //왼쪽 방향으로 돌면서 탐색
-            if(dir == -1) dir = 3;
+            dir = (dir+3)%4;
             
             int nx = x + dx[dir];
             int ny = y + dy[dir];
