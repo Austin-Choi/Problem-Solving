@@ -1,4 +1,7 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
  
 public class Main {    
     
@@ -8,21 +11,26 @@ public class Main {
     static int[] dx = {-1, 0, 1, 0}; //북, 동, 남, 서 순서대로
     static int[] dy = {0, 1, 0, -1};
     
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        
-        n = scan.nextInt();
-        m = scan.nextInt();
-        r = scan.nextInt();
-        c = scan.nextInt();
-        d = scan.nextInt();
-        
-        board = new int[n][m];
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                board[i][j] = scan.nextInt();
-            }
-        }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		//0 청소 안됨, 1 벽, 2 청소됨
+		board = new int[n][m];
+		
+		st = new StringTokenizer(br.readLine());
+		r = Integer.parseInt(st.nextToken());
+		c = Integer.parseInt(st.nextToken());
+		d = Integer.parseInt(st.nextToken());
+		
+		for(int i = 0; i<n; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j = 0; j<m; j++) {
+				board[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
         
         dfs(r, c, d);
         System.out.println(count);
