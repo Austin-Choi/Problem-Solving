@@ -15,7 +15,6 @@ public class Main {
 
         Set<String> before = new HashSet<>();
         Set<String> after = new HashSet<>();
-        Set<String> nameSet = new HashSet<>();
         String str = null;
         
         while((str = br.readLine()) != null) {
@@ -23,7 +22,6 @@ public class Main {
             String time = arr[0];
             String name = arr[1];
 
-            nameSet.add(name);
             if(S.compareTo(time) >= 0) {
                 before.add(name);
             }else if(E.compareTo(time) <= 0 && Q.compareTo(time) >= 0) {
@@ -32,8 +30,8 @@ public class Main {
         }
 
         int ans = 0;
-        for(String name : nameSet) {
-            if(before.contains(name) && after.contains(name)) {
+        for(String name : after) {
+            if(before.contains(name)) {
                 ans += 1;
             }
         }
