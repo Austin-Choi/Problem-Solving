@@ -12,14 +12,17 @@ class Solution {
                 rankMap.put(rank[i],i);
             }
         }
-        //key 리스트로 먼저 뽑아오기
-        ArrayList<Integer> keyList = new ArrayList<>(rankMap.keySet());
-        //key 사용해서 정렬
-        Collections.sort(keyList);
+        // //key 리스트로 먼저 뽑아오기
+        // ArrayList<Integer> keyList = new ArrayList<>(rankMap.keySet());
+        // //key 사용해서 정렬
+        // Collections.sort(keyList);
+        // return 10000*rankMap.get(keyList.get(0))
+        //     +100*rankMap.get(keyList.get(1))
+        //     +rankMap.get(keyList.get(2));
         
-        
-        return 10000*rankMap.get(keyList.get(0))
-            +100*rankMap.get(keyList.get(1))
-            +rankMap.get(keyList.get(2));
+        PriorityQueue<Integer> pq = new PriorityQueue<>(rankMap.keySet());
+        return 10000*rankMap.get(pq.poll())
+            + 100*rankMap.get(pq.poll())
+            + rankMap.get(pq.poll());
     }
 }
