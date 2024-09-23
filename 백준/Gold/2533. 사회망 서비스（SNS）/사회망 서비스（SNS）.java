@@ -1,9 +1,8 @@
-
 import java.util.*;
 import java.io.*;
 
 public class Main {
-    private static int[][] dp = new int[1000000][2];
+    private static int[][] dp;
     /*
         1 - 2, 3, 4라는 트리가 있다고 할 때
         1이 가질 수 있는 값 = 자식 노드에서 가능한 최소값
@@ -41,6 +40,7 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         //Node head = new Node(1, null);
         check = new boolean[N+1];
+        dp = new int[N+1][2];
         nodeList = new ArrayList<>();
         for(int nn = 0; nn <= N; nn++){
             nodeList.add(new ArrayList<>());
