@@ -7,59 +7,59 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int c = Integer.parseInt(br.readLine());
-        Map<Integer, Integer> m = new HashMap<>();
+        int[] m = new int[c];
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        StringBuilder sb = new StringBuilder();
-        boolean flag = false;
-        int before = -1;
-        while(st.hasMoreTokens()){
-            int temp = Integer.parseInt(st.nextToken());
-            if(before == -1){
-                if(temp != 1){
-                    flag = true;
-                    break;
-                }
-                before = temp;
-                m.put(temp, m.getOrDefault(temp, 0)+1);
-                sb.append(1).append(" ");
-            }
-            else{
-                if(Math.abs(before - temp)>1){
-                    flag = true;
-                    break;
-                }
-                /*
-                    (i) 이전의 숫자보다 큰 숫자가 나타나면 1
-                    (ii) 이전의 숫자중에 같은게 있으면 그 숫자의 값 += 1
-                    (iii) 이전의 숫자보다 작은 숫자면 예전에 저장됬던 키값중 동일한게 있나 보고 그 키값으로 불러와서 +1 하고
-                    , 그거보다 큰 키값들 전부 0으로 초기화
-                 */
-                if(before < temp){
-                    m.put(temp, 1);
-                    sb.append(1).append(" ");
-                }
-                else if(before == temp){
-                    m.put(temp, m.get(temp)+1);
-                    sb.append(m.get(temp)).append(" ");
-                }
-                else{
-                    m.put(temp, m.get(temp)+1);
-                    sb.append(m.get(temp)).append(" ");
-                    for(int n : m.keySet()){
-                        if(n > temp){
-                            m.put(n, 0);
-                        }
-                    }
-                }
-                before = temp;
+        for (int i = 0; i < c; i++) {
+            m[i] = Integer.parseInt(st.nextToken());
+        }
+
+        // 각 레벨에서의 번호 저장
+        int[] levels = new int[1000001];
+        // 출력 결과 저장
+        int[] result = new int[c];
+
+        // 첫 번째 항목의 레벨이 1이 아닌 경우 잘못된 구조
+        if (m[0] != 1) {
+            bw.write("-1\n");
+            bw.flush();
+            return;
+        }
+
+        // 첫 항목은 1로 시작
+        levels[1] = 1;
+        result[0] = 1;
+
+        for (int i = 1; i < c; i++) {
+            int currentLevel = m[i];
+            int previousLevel = m[i - 1];
+
+            // 레벨 차이가 1보다 크면 잘못된 보고서
+            if (currentLevel > previousLevel + 1) {
+                bw.write("-1\n");
+                bw.flush();
+                return;
             }
 
+            // 이전 레벨보다 더 높은 레벨인 경우
+            if (currentLevel > previousLevel) {
+                // 새로운 레벨 시작이므로 1부터 시작
+                levels[currentLevel] = 1;
+            } else if (currentLevel == previousLevel) {
+                // 같은 레벨인 경우 번호를 증가시킴
+                levels[currentLevel]++;
+            } else {
+                // 이전보다 작은 레벨로 돌아간 경우, 해당 레벨의 번호를 1 증가
+                levels[currentLevel]++;
+            }
+
+            result[i] = levels[currentLevel];
         }
-        if(flag)
-            bw.write(-1+"\n");
-        else
-            bw.write(sb + "\n");
+
+        // 결과 출력
+        for (int i = 0; i < c; i++) {
+            bw.write(result[i] + " ");
+        }
         bw.flush();
         bw.close();
         br.close();
