@@ -21,6 +21,7 @@ class Solution {
         for(int i = 0; i<gifts.length; i++){
             // [0] 준사람, [1] 받은사람
             String[] temp = gifts[i].split(" ");
+            // 이렇게 저장하면 완벽한 2차원 표가 아니라 정말 입력 들어온 것만 저장함
             sent.get(temp[0])
                 .put(temp[1], sent.get(temp[0]).getOrDefault(temp[1],0)+1);
             //선물 지수는 이번 달까지 자신이 친구들에게 준 선물의 수에서 받은 선물의 수를 뺀 값
@@ -53,6 +54,7 @@ class Solution {
                 }
             }
         }
+        // 위에서 다음달에 받을 선물 수를 Sender와 Receiver를 둘 다 갱신해줘서 반으로 줄여야 함
         return answer.isEmpty() ? 0 : Collections.max(answer.values())/2;
     }
 }
