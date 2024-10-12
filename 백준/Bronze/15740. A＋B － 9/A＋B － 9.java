@@ -1,4 +1,5 @@
 import java.io.*;
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -6,7 +7,9 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        long ans = Long.parseLong(st.nextToken())+Long.parseLong(st.nextToken());
+        BigInteger a = new BigInteger(st.nextToken());
+        BigInteger b = new BigInteger(st.nextToken());
+        BigInteger ans = a.add(b);
         bw.write(ans+"");
         bw.flush();
         bw.close();
