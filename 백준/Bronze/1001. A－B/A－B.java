@@ -19,9 +19,9 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int a = Integer.parseInt(st.nextToken());
         int b = Integer.parseInt(st.nextToken());
-        int answer = a-b;
-        //int answer2 = subtract(a,b);
-        bw.write(answer+"");
+        //int answer = a-b;
+        int answer2 = subtract(a,b);
+        bw.write(answer2+"");
         bw.flush();
         bw.close();
         br.close();
