@@ -20,7 +20,7 @@ public class Main {
         int a = Integer.parseInt(st.nextToken());
         int b = Integer.parseInt(st.nextToken());
         int answer = a-b;
-        int answer2 = subtract(a,b);
+        //int answer2 = subtract(a,b);
         bw.write(answer+"");
         bw.flush();
         bw.close();
