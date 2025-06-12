@@ -29,6 +29,8 @@ public class Main {
             int curNode = cur.end;
             int curCost = cur.cost;
 
+            if(dist[curNode] < curCost)
+                continue;
 
             for(Info next : board[curNode]){
                 if(dist[next.end] > dist[curNode] + next.cost){
