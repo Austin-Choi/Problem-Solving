@@ -17,12 +17,8 @@ public class Main {
         }
 
         for(int i = n; i<N; i++){
-            if(!visited[n]){
-                visited[n] = true;
-                out[depth] = li[i];
-                dfs(i+1, depth+1);
-                visited[n] = false;
-            }
+            out[depth] = li[i];
+            dfs(i+1, depth+1);
         }
     }
     public static void main(String[] args) throws IOException{
