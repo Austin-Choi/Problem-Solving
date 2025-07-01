@@ -10,30 +10,29 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        Map<Integer, Integer> m = new LinkedHashMap<>();
-        for(int i =0; i<N; i++){
-            m.put(Integer.parseInt(st.nextToken()), 0);
+        int[] arr = new int[N];
+        int max = 0;
+        boolean[] exists = new boolean[1_000_001];
+        for(int i = 0; i < N; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+            exists[arr[i]] = true;
+            max = Math.max(max, arr[i]);
         }
 
-        int limit = 0;
-        OptionalInt max = m.keySet().stream().mapToInt(x->x).max();
-        if(max.isPresent()){
-            limit = max.getAsInt();
-        }
+        int[] scores = new int[1_000_001];
 
-        for(int k : m.keySet()){
-            int i = 2;
-            while(k*i <= limit){
-                if(m.get(k*i) != null){
-                    m.put(k, m.get(k)+1);
-                    m.put(k*i, m.get(k*i)-1);
+        for(int i = 0; i < N; i++){
+            int k = arr[i];
+            for(int j = k * 2; j <= max; j += k){
+                if(exists[j]){
+                    scores[k]++;
+                    scores[j]--;
                 }
-                i++;
             }
         }
 
-        for(int k : m.keySet()){
-            sb.append(m.get(k)).append(" ");
+        for(int i = 0; i < N; i++){
+            sb.append(scores[arr[i]]).append(" ");
         }
 
         bw.write(sb.toString());
