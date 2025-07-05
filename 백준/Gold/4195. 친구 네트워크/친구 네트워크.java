@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.*;
 
@@ -12,12 +13,20 @@ public class Main {
         return parent[x];
     }
 
+    // union by size -> 트리 높이 최소화
     private static int union(int x, int y){
         x = find(x);
         y = find(y);
         if(x != y){
-            parent[y] = x;
-            size[x] += size[y];
+            if (size[x] < size[y]) {
+                parent[x] = y;
+                size[y] += size[x];
+                return size[y];
+            } else {
+                parent[y] = x;
+                size[x] += size[y];
+                return size[x];
+            }
         }
         return size[x];
     }
@@ -41,16 +50,15 @@ public class Main {
                 StringTokenizer st = new StringTokenizer(br.readLine());
                 String a = st.nextToken();
                 String b = st.nextToken();
-                int ai = 0;
-                int bi = 0;
-                if(m.get(a) == null){
-                    m.put(a, fidx++);
-                }
-                ai = m.get(a);
 
-                if(m.get(b) == null)
+                if(!m.containsKey(a))
+                    m.put(a, fidx++);
+
+                if(!m.containsKey(b))
                     m.put(b, fidx++);
-                bi = m.get(b);
+
+                int ai = m.get(a);
+                int bi = m.get(b);
 
                 bw.write(String.valueOf(union(ai, bi)));
                 bw.newLine();
