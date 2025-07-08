@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.*;
 
@@ -47,6 +46,8 @@ public class Main {
         // 이진 분할로 유니크한 아이템화해서
         // 0-1 배낭문제로 만듬
         List<Item> items = new ArrayList<>();
+        int[] dp = new int[M + 1];
+
         for(Info info : inputs){
             int k = info.k;
             int base = 1;
@@ -56,7 +57,9 @@ public class Main {
                 int nv = info.v * count;
                 int nc = info.c * count;
 
-                items.add(new Item(nv, nc));
+                for(int j = M; j >= nv; j--){
+                    dp[j] = Math.max(dp[j], dp[j-nv] + nc);
+                }
 
                 k -= count;
                 base *= 2;
@@ -65,15 +68,15 @@ public class Main {
 
         // 배낭 무게가 i 일때 최대 가치
         // 무게 제한이 M이므로 전체 무게는 필요없음
-        int[] dp = new int[M + 1];
-        for(Item it : items){
-            int w = it.weight;
-            int v = it.val;
-
-            for(int j = M; j >= w; j--){
-                dp[j] = Math.max(dp[j], dp[j-w] + v);
-            }
-        }
+//        int[] dp = new int[M + 1];
+//        for(Item it : items){
+//            int w = it.weight;
+//            int v = it.val;
+//
+//            for(int j = M; j >= w; j--){
+//                dp[j] = Math.max(dp[j], dp[j-w] + v);
+//            }
+//        }
 
         int ans = 0;
         for(int i = 0; i<=M; i++){
