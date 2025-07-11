@@ -17,43 +17,22 @@ public class Main {
             rst.add(sum);
         }
 
-        Collections.sort(rst);
         return rst;
     }
+    private static Map<Long, Integer> getSubsetSumMap(int[] arr){
+        Map<Long, Integer> map = new HashMap<>();
+        int total = 1 << arr.length;
 
-    private static int upperBound(List<Long> arr, long target){
-        int l = 0;
-        // 오른쪽 경계는 배열 밖을 의미해야 마지막 값을 포함 가능함
-        int r = arr.size();
-
-        while(l<r){
-            int mid = (l+r)/2;
-            long cur = arr.get(mid);
-            if(cur <= target){
-                l = mid+1;
+        for(int i = 0; i<total; i++){
+            long sum = 0;
+            for(int j = 0; j<arr.length; j++){
+                if((i & (1 << j))!=0)
+                    sum += arr[j];
             }
-            else
-                r = mid;
+            map.put(sum, map.getOrDefault(sum, 0)+1);
         }
 
-        return l;
-    }
-
-    private static int lowerBound(List<Long> arr, long target){
-        int l = 0;
-        int r = arr.size();
-
-        while(l<r){
-            int mid = (l+r)/2;
-            long cur = arr.get(mid);
-            if(cur < target){
-                l = mid+1;
-            }
-            else
-                r = mid;
-        }
-
-        return l;
+        return map;
     }
 
     public static void main(String[] args) throws IOException {
@@ -76,18 +55,15 @@ public class Main {
         }
 
         List<Long> lss = getSubsetSum(lefts);
-        List<Long> rss = getSubsetSum(rights);
+        Map<Long, Integer> rss = getSubsetSumMap(rights);
 
+        // map counting
+        // 값의 빈도수를 빠르게 저장/조회
+        // 중복 처리 용이, 정렬 불필요, 탐색 O(1), 저장 O(n)
         long ans = 0;
-        // 같은 합이 여러개 있을 수 있음
-        // upperBound - lowerBound
-        // upperBound는 값을 포함하고 그 값이 나타나는 마지막 인덱스
-        // -> left 옮기는 조건이 <=
-        // lowerBound는 값이 나타나는 첫번째 인덱스
-        // -> left 옮기는 조건이 <
         for(int i = 0; i<lss.size(); i++){
             long target = S - lss.get(i);
-            ans += upperBound(rss, target) - lowerBound(rss, target);
+            ans += rss.getOrDefault(target, 0);
         }
         // 공집합의 합 0은 빼야함
         if(S == 0)
