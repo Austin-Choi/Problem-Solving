@@ -47,7 +47,7 @@ public class Main {
     // 간선 기준 중복체크해야함
     static void bfs(){
         Queue<Integer> q = new ArrayDeque<>();
-        boolean[][] visited = new boolean[N+1][N+1];
+        Set<String> visited = new HashSet<>();
         q.add(E);
 
         while(!q.isEmpty()){
@@ -55,8 +55,9 @@ public class Main {
 
             for(Info i : boardReversed[cur]){
                 if(dist[i.to] + i.cost == dist[i.from]){
-                    if(!visited[i.to][i.from]){
-                        visited[i.to][i.from] = true;
+                    String s = i.to +"->"+i.from;
+                    if(!visited.contains(s)){
+                        visited.add(s);
                         ans++;
                         q.add(i.to);
                     }
