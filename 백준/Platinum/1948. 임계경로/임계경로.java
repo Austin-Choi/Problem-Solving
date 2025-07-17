@@ -1,11 +1,9 @@
 import java.util.*;
 import java.io.*;
 class Info{
-    int from;
     int to;
     int cost;
-    public Info(int f, int t, int c){
-        this.from = f;
+    public Info(int t, int c){
         this.to = t;
         this.cost = c;
     }
@@ -54,8 +52,8 @@ public class Main {
             int cur = q.poll();
 
             for(Info i : boardReversed[cur]){
-                if(dist[i.to] + i.cost == dist[i.from]){
-                    String s = i.to +"->"+i.from;
+                if(dist[i.to] + i.cost == dist[cur]){
+                    String s = i.to +"->"+cur;
                     if(!visited.contains(s)){
                         visited.add(s);
                         ans++;
@@ -85,8 +83,8 @@ public class Main {
             int s = Integer.parseInt(st.nextToken());
             int e = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
-            board[s].add(new Info(s,e,c));
-            boardReversed[e].add(new Info(e,s,c));
+            board[s].add(new Info(e,c));
+            boardReversed[e].add(new Info(s,c));
             indegree[e]++;
         }
 
