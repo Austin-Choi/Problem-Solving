@@ -28,45 +28,26 @@ public class Main {
     static int N,K;
     static Set<Integer> tap;
     static int[] board;
-    static int[] getNeverUsed(int startIdx){
-        int[] rst = new int[2];
-        rst[0] = -1;
-        rst[1] = 0;
-        Set<Integer> temp = new HashSet<>();
-        for(int i = startIdx; i<K; i++){
-            temp.add(board[i]);
-        }
+    static int getRemoveTarget(int cur){
+        int latestIdx = -1;
+        int itemToRemove = -1;
         for(int item : tap){
-            if(!temp.contains(item)){
-                rst[0] = item;
-                rst[1] = 1;
-                return rst;
-            }
-        }
-
-        return rst;
-    }
-
-    static int getLatestUsed(int cur){
-        int maxLen = 0;
-        int latestItem = -1;
-        for(int item : tap){
-            int len = 0;
+            int nextUse = Integer.MAX_VALUE;
             for(int i = cur; i<K; i++){
                 if(item == board[i]){
+                    nextUse = i;
                     break;
                 }
-                len++;
             }
-            if(len == K-cur)
+            if(nextUse == Integer.MAX_VALUE)
                 return item;
-            
-            if(maxLen < len){
-                maxLen = len;
-                latestItem = item;
+
+            if(nextUse > latestIdx){
+                latestIdx = nextUse;
+                itemToRemove = item;
             }
         }
-        return latestItem;
+        return itemToRemove;
     }
 
     public static void main(String[] args) throws Exception{
@@ -95,15 +76,9 @@ public class Main {
                     continue;
                 else{
                     // 미래에 아예 사용되지 않을 물건 찾은 경우 먼저 뺌
-                    int[] temp = getNeverUsed(i);
-                    if(temp[1] == 1)
-                        tap.remove(temp[0]);
-
                     // 탭에 있는 물건이 전부 미래에 언젠가는 사용된다면
                     // 다음으로 등장하는 텀이 가장 긴 아이템 제거해야함
-                    else
-                        tap.remove(getLatestUsed(i));
-
+                    tap.remove(getRemoveTarget(i));
                     // 그리고 뺀 자리에 삽입함
                     tap.add(board[i]);
                     ans++;
