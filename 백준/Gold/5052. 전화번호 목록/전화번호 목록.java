@@ -1,53 +1,63 @@
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+
 public class Main {
     static int T;
     static int N;
     static int count;
     static class Node{
-        int val;
-        TreeMap<Integer, Node> m;
+        Node[] children = new Node[10];
+        boolean isEnd = false;
 
-        Node(int val){
-            this.val = val;
-            m = new TreeMap<>();
-        }
-
-        public void insert(char[] str, int idx){
-            if(idx >= str.length){
-                return;
+        public boolean insert(char[] str, int idx){
+            // 끝이면 끝이라고 저장
+            if(idx == str.length){
+                isEnd = true;
+                return hasChild();
             }
+
+            if(isEnd)
+                return true;
+
             int num = str[idx] - '0';
-            m.putIfAbsent(num, new Node(num));
-            m.get(num).insert(str, idx+1);
+            if(children[num] == null)
+                children[num] = new Node();
+            return children[num].insert(str, idx+1);
         }
-    }
-    static void isRelated(Node cur){
-        if(cur.m.isEmpty())
-            count++;
-        else {
-            for (Node n : cur.m.values()) {
-                isRelated(n);
+
+        public boolean hasChild(){
+            for(Node child : children){
+                if(child != null)
+                    return true;
             }
+            return false;
         }
     }
+
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         T = Integer.parseInt(br.readLine());
+
         for(int t = 0; t<T; t++){
             count = 0;
             N = Integer.parseInt(br.readLine());
-            Node root = new Node(-1);
-            for(int n= 0; n<N; n++){
-                char[] tmp = br.readLine().toCharArray();
-                root.insert(tmp, 0);
+            Node root = new Node();
+            boolean hasChild = true;
+
+            String[] nums = new String[N];
+            for(int i = 0; i<N; i++){
+                nums[i] = br.readLine();
             }
-            isRelated(root);
-            if(count == N)
-                bw.write("YES\n");
-            else
-                bw.write("NO\n");
+
+            for(int i = 0; i<N; i++){
+                if (root.insert(nums[i].toCharArray(), 0)){
+                    hasChild = false;
+                    break;
+                }
+            }
+
+            bw.write(hasChild ? "YES\n" : "NO\n");
         }
         bw.flush();
         bw.close();
