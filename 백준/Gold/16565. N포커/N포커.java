@@ -26,55 +26,47 @@ C(52-4k, N-4k) 남은 카드 중에서 남은 자리수 채우기
 MOD 연산에서는 나눗셈 = 곱셈역원
 -> 페르마의 소정리 이용하기
 n! * (r!(n-r)!)의역원 % MOD
+------------------------------------------------------
+조합 문제에서는 파스칼의 삼각형 활용
+각 숫자는 바로 위 행의 왼쪽과 오른쪽 숫자를 더한 값으로 이루어져있음
+삼각형의 n번째 행 k번째 숫자는 조합 C(n, k)
 
-팩토리얼 계산에는 분할정복 이용한 fac 쓰기
+답 1개만 출력하면 되서 단순 누적 변수로 dp[N] 사용함
  */
 import java.io.*;
 public class Main {
     static final int MOD = 10007;
-    static int[] fac;
-    static int pow(int a, int b){
-        int rst = 1;
-        a = a % MOD;
-
-        while(b>0){
-            if(b%2 == 1)
-                rst = (rst * a) % MOD;
-            a = (a * a) % MOD;
-            b /= 2;
+    static int[][] comb;
+    // 파스칼의 삼각형
+    static void makeComb(){
+        for(int i = 0; i<53; i++){
+            comb[i][0] = 1;
         }
-
-        return  rst;
-    }
-    static void cacheFac(){
-        fac[0] = 1;
-        for(int i = 1; i<=52; i++){
-            fac[i] = fac[i-1] * i % MOD;
+        for(int i = 1; i<53; i++){
+            for(int j = 1; j<=i; j++){
+                comb[i][j] = (comb[i-1][j-1] + comb[i-1][j]) % MOD;
+            }
         }
     }
-    static int comb(int n, int r){
-        if(r > n || r < 0)
-            return 0;
-        return fac[n] * pow(fac[r]*fac[n-r]%MOD, MOD-2) % MOD;
-    }
+
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int N = Integer.parseInt(br.readLine());
         int[] dp = new int[53];
-        fac = new int[53];
-        cacheFac();
+        comb = new int[53][53];
+        makeComb();
         dp[1] = dp[2] = dp[3] = 0;
-        dp[4] = 13;
-        for(int n = 4; n<=N; n++){
-            dp[n] = 0;
-            for(int k = 1; k*4 <= n && k <= 13; k++){
-                int sign = (k%2==1) ? 1 : -1;
-                int use = comb(13,k);
-                int rest = comb(52-4*k, n-4*k);
-                dp[n] = (dp[n] + sign * use * rest % MOD + MOD) % MOD;
-            }
+
+        for(int k = 1; k*4 <= N && k <= 13; k++){
+            int sign = (k%2==1) ? 1 : -1;
+            int use = comb[13][k];
+            int rest = comb[52-4*k][N-4*k];
+            dp[N] = (dp[N] + sign * use * rest) % MOD;
         }
+        if(dp[N]<0)
+            dp[N] += MOD;
+
         bw.write(String.valueOf(dp[N]));
         bw.flush();
         bw.close();
