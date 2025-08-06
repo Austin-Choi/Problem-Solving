@@ -1,3 +1,15 @@
+/*
+distf[][] 모든 F 자리를 queue에 넣고 최단거리 구하고
+distj[][] 지훈이가 가장자리까지 가는 최단 거리 갱신함
+지훈이의 dist 갱신할때
+distj + 1 < distf 일때만 갱신해야함 -> 안그러면 불탐
+그리고 가장자리에 닿으면 바로 최단거리 return
+que 다돌았는데 못찾으면 -1
+
+-1 impossible
+
+불 bfs에서 벽을 고려안했다..
+ */
 import java.awt.Point;
 import java.io.*;
 import java.util.*;
@@ -57,6 +69,7 @@ public class Main {
             for(int d = 0; d<4; d++){
                 int ni = ci+di[d];
                 int nj = cj+dj[d];
+                //탈출
                 if(ni < 0 || nj < 0 || ni >= R || nj >= C){
                     return distj[ci][cj] + 1;
                 }
@@ -84,11 +97,6 @@ public class Main {
         maxLimit = R*C + 1;
         board = new char[R][C];
 
-        // 가장자리
-        // -> i==0 j any
-        // -> i any j==0
-        // -> i==R-1 j any
-        // -> i any j==C-1
         for(int i = 0; i<R; i++){
             char[] temp = br.readLine().toCharArray();
             for(int j = 0; j<C; j++){
