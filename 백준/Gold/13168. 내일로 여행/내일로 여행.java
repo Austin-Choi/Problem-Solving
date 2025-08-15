@@ -1,3 +1,10 @@
+/*
+cost 최소가 1이므로 0.5 계산 오차날수 있으니
+int 유지하면서 처음 입력을 *2해서 받기
+
+M == 1 고려하면 안돼!!!!
+그리고 Limit도 그냥 Inf로 잡기
+ */
 import java.util.*;
 import java.io.*;
 public class Main {
