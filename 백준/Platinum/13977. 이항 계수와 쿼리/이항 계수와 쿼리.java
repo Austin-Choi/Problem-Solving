@@ -37,8 +37,6 @@ public class Main {
     static final long MOD = 1_000_000_007;
     static final int MAX = 4_000_000;
     static long[] fac = new long[MAX+1];
-    static long[] invFac = new long[MAX+1];
-
     static long fastExp(long base, long exp){
         long rst = 1;
         base %= MOD;
@@ -56,17 +54,12 @@ public class Main {
         for(int i = 1; i<=MAX; i++){
             fac[i] = (fac[i-1]*i) % MOD;
         }
-
-        invFac[MAX] = fastExp(fac[MAX], MOD-2);
-        for(int i = MAX - 1; i>=0; i--){
-            invFac[i] = (invFac[i+1] * (i+1)) % MOD;
-        }
     }
 
     static long paskal(int n, int k){
         if(k==0 || n==k)
             return 1;
-        return fac[n] * invFac[k] % MOD * invFac[n-k] % MOD;
+        return fac[n] * fastExp(fac[n-k], MOD-2) % MOD * fastExp(fac[k], MOD-2) % MOD;
     }
 
     public static void main(String[] args) throws IOException{
