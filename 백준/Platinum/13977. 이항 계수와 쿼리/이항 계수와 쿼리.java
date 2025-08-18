@@ -29,6 +29,8 @@ invFac[n-1] = invFac[n] * n mod MOD
 그리고 fac이랑 invFac 활용해서 파스칼 삼각형 값 구하기
 n! / k! (n-k)!
 -> fac[n] * invFac[k] mod MOD * invFac[n-k] mod MOD
+
+fac, invFac 둘다 전처리하면 쿼리수가 1000만이어도 1초 내로 처리 가능
  */
 
 import java.util.*;
@@ -37,6 +39,8 @@ public class Main {
     static final long MOD = 1_000_000_007;
     static final int MAX = 4_000_000;
     static long[] fac = new long[MAX+1];
+    static long[] invFac = new long[MAX+1];
+
     static long fastExp(long base, long exp){
         long rst = 1;
         base %= MOD;
@@ -54,12 +58,17 @@ public class Main {
         for(int i = 1; i<=MAX; i++){
             fac[i] = (fac[i-1]*i) % MOD;
         }
+
+        invFac[MAX] = fastExp(fac[MAX], MOD-2);
+        for(int i = MAX - 1; i>=0; i--){
+            invFac[i] = (invFac[i+1] * (i+1)) % MOD;
+        }
     }
 
     static long paskal(int n, int k){
         if(k==0 || n==k)
             return 1;
-        return fac[n] * fastExp(fac[n-k], MOD-2) % MOD * fastExp(fac[k], MOD-2) % MOD;
+        return fac[n] * invFac[k] % MOD * invFac[n-k] % MOD;
     }
 
     public static void main(String[] args) throws IOException{
