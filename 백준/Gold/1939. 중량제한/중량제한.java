@@ -1,4 +1,3 @@
-
 /*
 양방향 그래프
 같은 섬 사이에 여러개의 다리가 있을수 있음 -> 그중 큰걸로
@@ -10,14 +9,14 @@ minimax path 문제
 여러 쿼리 -> MST + LCA
 
 입력받을때 인접리스트로 최소값 최대값 받기
--> Map<정점, cost>[] 배열로 받아서 
+-> Map<정점, cost>[] 배열로 받아서
 getOrDefault로 불러와서 업데이트
 
 다익스트라
 -> 최대값 찾는거니까 dist는 모두 -1, 시작은 S, MAX_VALUE로 큐에 넣기
-entrySet으로 순회하면서 
+entrySet으로 순회하면서
 costSoFar랑 현재 edge의 cost중 작은거 nextCost로 저장
-nextCost가 dist[next] 보다 크면 
+nextCost가 dist[next] 보다 크면
 dist[next] = nextCost해주고
 큐에 nest, nextCost 넣기
  */
@@ -41,6 +40,9 @@ public class Main {
             long[] cur = pq.poll();
             int now = (int) cur[0];
             long costSoFar = cur[1];
+
+            if(dist[now] > costSoFar)
+                continue;
 
             for(Map.Entry<Integer, Long> e : board[now].entrySet()){
                 int next = e.getKey();
