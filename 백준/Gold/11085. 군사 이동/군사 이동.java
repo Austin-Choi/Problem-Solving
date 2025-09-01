@@ -5,11 +5,10 @@ Info start dest cost
 board는 Info arraylist
 
 이분탐색은
-l <= r
 가능해지면 해당 인덱스를 답 저장, 더 큰 후보로 시도
 l = mid + 1
 불가능해지면 더 작은 후보로 시도
-r = mid - 1
+r = mid
  */
 import java.io.*;
 import java.util.*;
@@ -75,13 +74,13 @@ public class Main {
         }
 
         Arrays.sort(arr);
-        int l = arr[0];
-        int r = arr[M-1];
+        int l = 0;
+        int r = M-1;
         int ans = 0;
         while(l <= r){
             int mid = (l+r)/2;
-            if(can(mid)) {
-                ans = mid;
+            if(can(arr[mid])) {
+                ans = arr[mid];
                 l = mid + 1;
             }
             else
