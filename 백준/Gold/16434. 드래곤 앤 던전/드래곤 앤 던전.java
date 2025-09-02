@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,13 +56,15 @@ public class Main {
         hatk = Long.parseLong(st.nextToken());
         Info[] arr = new Info[N];
         long l = 0;
-        long r = Long.MAX_VALUE;
+        long r = 0;
         for(int i = 0; i<N; i++){
             st = new StringTokenizer(br.readLine());
             long t = Long.parseLong(st.nextToken());
             long a = Long.parseLong(st.nextToken());
             long h = Long.parseLong(st.nextToken());
             arr[i] = new Info(t,a,h);
+            if(t == 1)
+                r += (a*h);
         }
 
         long ans = 0;
