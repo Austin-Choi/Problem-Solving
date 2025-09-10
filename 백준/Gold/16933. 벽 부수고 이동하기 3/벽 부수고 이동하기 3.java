@@ -7,7 +7,12 @@ dist % 2 == 1 -> 낮, 아니면 밤?
 dist는 낮이면 그대로 다음거 +1하고 밤이면 +2하기
 isday는 낮이엇으면 isday+1%2 아니면 isDay 그대로(한번 기다리는거니까)
 ----------------------------------------------------------------
-밤 낮도 dist에 추가해야함 [2]
+홀짝 토글
++1 %2 말고 1-isday
+-------------------------------------
+최적화
+명시적으로 밤이면 wait을 해서 현재 노드를 다음 큐에 넣어주고
+현재 노드의 dist를 +1 해 주기
 
  */
 import java.util.*;
@@ -15,22 +20,15 @@ import java.io.*;
 public class Main {
     static int N,M,K;
     static char[][] board;
-    static int[][][][] dist;
+    static int[][][] dist;
     static int[] di = {0,0,1,-1};
     static int[] dj = {1,-1,0,0};
     static int bfs(){
         Queue<int[]> q = new ArrayDeque<>();
         // i, j, wall, day : 0 | night : 1
         q.add(new int[]{0,0,0,0});
-        dist = new int[N][M][K+1][2];
-        for(int i = 0; i<N; i++){
-            for(int j = 0; j<M; j++){
-                for(int k = 0; k<=K; k++){
-                    Arrays.fill(dist[i][j][k], Integer.MAX_VALUE);
-                }
-            }
-        }
-        dist[0][0][0][0] = 1;
+        dist = new int[N][M][K+1];
+        dist[0][0][0] = 1;
 
         while(!q.isEmpty()){
             int[] cur = q.poll();
@@ -40,41 +38,37 @@ public class Main {
             int isDay = cur[3];
             boolean flag = cw < K;
 
+            if(ci == N-1 && cj == M-1)
+                return dist[ci][cj][cw];
+
             for(int d = 0; d<4; d++){
                 int ni = ci + di[d];
                 int nj = cj + dj[d];
                 if(ni < 0 || nj < 0 || ni >= N || nj >= M)
                     continue;
                 if(board[ni][nj] == '0'){
-                    if(dist[ni][nj][cw][(isDay+1)%2] > dist[ci][cj][cw][isDay] + 1) {
-                        dist[ni][nj][cw][(isDay+1)%2] = dist[ci][cj][cw][isDay] + 1;
-                        q.add(new int[]{ni, nj, cw, (isDay + 1) % 2});
+                    if(dist[ni][nj][cw] == 0) {
+                        dist[ni][nj][cw] = dist[ci][cj][cw] + 1;
+                        q.add(new int[]{ni, nj, cw, 1-isDay});
                     }
                 }
                 else{
                     if(flag){
                         if(isDay == 0){
-                            if(dist[ni][nj][cw+1][(isDay+1)%2] > dist[ci][cj][cw][isDay] + 1){
-                                dist[ni][nj][cw+1][(isDay+1)%2] = dist[ci][cj][cw][isDay] + 1;
-                                q.add(new int[]{ni,nj,cw+1,(isDay+1)%2});
-                            }
-                        }
-                        else{
-                            if(dist[ni][nj][cw+1][isDay] > dist[ci][cj][cw][isDay]+2){
-                                dist[ni][nj][cw+1][isDay] = dist[ci][cj][cw][isDay] + 2;
-                                q.add(new int[]{ni,nj,cw+1,isDay});
+                            if(dist[ni][nj][cw+1] == 0){
+                                dist[ni][nj][cw+1] = dist[ci][cj][cw]+ 1;
+                                q.add(new int[]{ni,nj,cw+1,1-isDay});
                             }
                         }
                     }
                 }
             }
+            if(isDay == 1){
+                q.add(new int[]{ci,cj,cw,0});
+                dist[ci][cj][cw] += 1;
+            }
         }
-        int ans = Integer.MAX_VALUE;
-        for(int[] i2 : dist[N-1][M-1]){
-            for(int i = 0; i<2; i++)
-                ans = Math.min(ans, i2[i]);
-        }
-        return ans;
+        return -1;
     }
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
