@@ -3,10 +3,12 @@
 Point[]로 놓을수 있는 위치 인덱스 해싱
 -> 전체에서 G+R개 뽑음
 -> G+R개에서 G개만 뽑음 (나머지는 R)
+--------------------------------------
+후보 길이만큼 각자 boolean 배열 green, red 만들어놓고
+현재 idx를 초록하는지 빨강하는지 백트래킹
 
-2) 빨강, 초록 배약액 퍼뜨리기
-동시 bfs
-스테이지별로 꽃 갯수 갱신해야하니까
+2) 빨강, 초록 배양액 퍼뜨리기
+동시 bfs + 스테이지별로 꽃 갯수 갱신해야하니까
 queue 안에 i,j,isGreen,time으로 해서 time이 bfs단계
 greentime 2차원, redtime 2차원 배열 놓고
 현재 ci,cj가 flowers에서 true면 못퍼져나가니까 진행 x
@@ -26,64 +28,48 @@ public class Main {
 
     static List<Point> cand = new ArrayList<>();
 
-    static void chooseGR(int idx, int cnt, List<Integer> chosen){
-        if(cnt == G+R){
-            chooseG(0,0,chosen,new ArrayList<>());
-            return;
-        }
-        if (idx == cand.size())
-            return;
-
-        chosen.add(idx);
-        chooseGR(idx+1, cnt+1, chosen);
-        chosen.remove(chosen.size()-1);
-
-        chooseGR(idx+1, cnt, chosen);
-    }
-
     static int ans = 0;
-    static void chooseG(int idx, int cnt, List<Integer> chosen, List<Integer> green){
-        if(cnt == G){
-            List<Integer> red = new ArrayList<>();
-            for(int x : chosen){
-                // 병목 의심 지점 1
-                if(!green.contains(x))
-                    red.add(x);
+    static void choose(int idx, int g, int r, boolean[] isGreen, boolean[] isRed){
+        if(g > G || r > R)
+            return;
+        if(idx == cand.size()){
+            if(g == G && r == R){
+                List<Integer> green = new ArrayList<>();
+                List<Integer> red = new ArrayList<>();
+                for(int i = 0; i<cand.size(); i++){
+                    if(isGreen[i])
+                        green.add(i);
+                    if(isRed[i])
+                        red.add(i);
+                }
+                ans = Math.max(ans, bfs(green, red));
             }
-            ans = Math.max(ans, bfs(green, red));
             return;
         }
 
-        // 오타 : 끝까지 돌려야 g마지막에 들어가는것도 체크함
-        if(idx == chosen.size())
-            return;
+        // 초록 선택
+        isGreen[idx] = true;
+        choose(idx+1,g+1, r, isGreen, isRed);
+        isGreen[idx] = false;
 
-        green.add(chosen.get(idx));
-        chooseG(idx+1, cnt+1, chosen, green);
-        green.remove(green.size()-1);
+        // 빨강 선택
+        isRed[idx] = true;
+        choose(idx+1, g, r+1, isGreen, isRed);
+        isRed[idx] = false;
 
-        chooseG(idx+1, cnt, chosen, green);
+        // 아무것도 선택 x
+        choose(idx+1, g, r, isGreen, isRed);
     }
 
-    static class Info{
-        int i;
-        int j;
-        boolean isGreen;
-        int time;
-        Info(int i, int j, boolean isGreen, int time){
-            this.i = i;
-            this.j = j;
-            this.isGreen = isGreen;
-            this.time = time;
-        }
-    }
     static int[] di = {0,0,1,-1};
     static int[] dj = {1,-1,0,0};
 
     // 시간 기준으로 레벨 관리
+    // queue -> i,j,isGreen(1,0),time
     // gt, rt에서 미방문 -1, 시작점 0
+    // 3번째 1 -> green, 0->red
     static int bfs(List<Integer> green, List<Integer> red){
-        Queue<Info> q = new ArrayDeque<>();
+        Queue<int[]> q = new ArrayDeque<>();
         int[][] gt = new int[N][M];
         for(int i =0; i<N; i++){
             Arrays.fill(gt[i], -1);
@@ -96,21 +82,21 @@ public class Main {
 
         for(int gg : green){
             Point g = cand.get(gg);
-            q.add(new Info(g.x, g.y, true, 0));
+            q.add(new int[]{g.x, g.y, 1, 0});
             gt[g.x][g.y] = 0;
         }
         for(int rr : red){
             Point r = cand.get(rr);
-            q.add(new Info(r.x, r.y, false, 0));
+            q.add(new int[]{r.x, r.y, 0, 0});
             rt[r.x][r.y] = 0;
         }
 
         while(!q.isEmpty()){
-            Info cur = q.poll();
-            int ci = cur.i;
-            int cj = cur.j;
-            boolean isGreen = cur.isGreen;
-            int ct = cur.time;
+            int[] cur = q.poll();
+            int ci = cur[0];
+            int cj = cur[1];
+            int isGreen = cur[2];
+            int ct = cur[3];
 
             if(flowers[ci][cj])
                 continue;
@@ -124,13 +110,13 @@ public class Main {
                     continue;
 
                 // 도달했을때 바로 꽃이 되는지 체크해야 함
-                if(isGreen){
+                if(isGreen == 1){
                     if(gt[ni][nj] == -1){
                         gt[ni][nj] = ct+1;
                         if(rt[ni][nj] == ct+1)
                             flowers[ni][nj] = true;
                         else
-                            q.add(new Info(ni, nj, isGreen, ct+1));
+                            q.add(new int[]{ni, nj, isGreen, ct+1});
                     }
                     else
                         continue;
@@ -141,7 +127,7 @@ public class Main {
                         if(gt[ni][nj] == ct+1)
                             flowers[ni][nj] = true;
                         else
-                            q.add(new Info(ni, nj, isGreen, ct+1));
+                            q.add(new int[]{ni, nj, isGreen, ct+1});
                     }
                 }
             }
@@ -176,7 +162,7 @@ public class Main {
             }
         }
 
-        chooseGR(0, 0, new ArrayList<>());
+        choose(0,0,0, new boolean[cand.size()], new boolean[cand.size()]);
         System.out.println(ans);
     }
 }
