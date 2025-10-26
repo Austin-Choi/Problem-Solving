@@ -6,6 +6,11 @@ dist[ 도착지 ][ 사용 간선 수 ] = 최소비용
 -> 다익스트라 전처리
 세금 배열은 누적합 배열 처리로 쓰고
 업데이트 될때마다 (0<=k<=V) dist[도착지][k] + k*세금 중 최소값 출력
+----
+prefix-min 승격
+갱신을 할때 지금 갱신되는건 k+1이고
+그 이상의 값들은 더해지기만 할거니까
+지금의 최소값으로 덮어써버리면 쓸모없는 계산들이 없어짐
  */
 import java.util.*;
 import java.io.*;
@@ -44,6 +49,12 @@ public class Main {
                 if(dist[nd][ck+1] > nc){
                     dist[nd][ck+1] = nc;
                     pq.add(new Info(nd, nc, ck+1));
+                    for(int j = ck +2; j<=N-1; j++){
+                        if(dist[nd][j] > nc)
+                            dist[nd][j] = nc;
+                        else
+                            break;
+                    }
                 }
             }
         }
