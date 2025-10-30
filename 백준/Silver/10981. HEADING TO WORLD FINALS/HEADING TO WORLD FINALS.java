@@ -9,7 +9,6 @@ import java.io.*;
 public class Main {
     static int N,K;
     static Map<String, PriorityQueue<Team>> schools = new HashMap<>();
-    static PriorityQueue<Team>[] teams;
     static class Team implements Comparable<Team>{
         String name;
         int solved;
@@ -33,17 +32,14 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-        teams = new PriorityQueue[100001];
-        for(int i = 0; i<100001; i++){
-            teams[i] = new PriorityQueue<>();
-        }
-        int id = 0;
+
         while(N-->0){
             st = new StringTokenizer(br.readLine());
             String s = st.nextToken();
             String n = st.nextToken();
             int sol = Integer.parseInt(st.nextToken());
             int pen = Integer.parseInt(st.nextToken());
+
             PriorityQueue<Team> cur = null;
             if(!schools.containsKey(s))
                 schools.put(s,new PriorityQueue<>());
