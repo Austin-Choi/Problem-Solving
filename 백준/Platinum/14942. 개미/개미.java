@@ -55,7 +55,7 @@ public class Main {
 
             for(Info n : board[cd]){
                 int nd = n.dest;
-                // 중요!! 부모로 되돌아가는 간선은 건너뛰어야함 
+                // 중요!! 부모로 되돌아가는 간선은 건너뛰어야함
                 if(parent[cd] == nd)
                     continue;
                 parent[nd] = cd;
@@ -117,13 +117,15 @@ public class Main {
         }
     }
 
-    // 현재 room에서 energy로 올라갈수 있는 가장 위의 노드 재귀로
-    // 큰점프 먼저해서 점프 비용만큼 에너지에서 빼고 재귀
+    // 현재 room에서 energy로 올라갈수 있는 가장 위의 노드 반복문으로
+    // 큰점프 먼저해서 점프 비용만큼 에너지에서 빼고 
     // 선택 없으면 현재 room이 최종임
     static int rc(int room, long curEnergy){
         for(int k = LOG-1; k>=0; k--){
-            if(up[k][room] != -1 && costup[k][room] <= curEnergy)
-                return rc(up[k][room], curEnergy-costup[k][room]);
+            if(up[k][room] != -1 && costup[k][room] <= curEnergy) {
+                curEnergy -= costup[k][room];
+                room = up[k][room];
+            }
         }
         return room;
     }
