@@ -11,7 +11,7 @@ public class Main {
     static int N,M,Q;
     static ArrayList<Integer>[] board;
     static boolean[] isStation;
-    static boolean[] isHeavy;
+    //static boolean[] isHeavy;
     static int[] heavyCnt;
     static final int B = (int) Math.sqrt(200_000) + 1;
 
@@ -21,21 +21,11 @@ public class Main {
                 return -1;
             isStation[i] = true;
             for(int next : board[i]){
-                if(isHeavy[next])
-                    heavyCnt[next]++;
+                heavyCnt[next]++;
             }
             return -1;
         }
-
-        if(isHeavy[i])
-            return heavyCnt[i];
-        int cnt = 0;
-        for(int next : board[i]){
-            if(isStation[next])
-                cnt++;
-        }
-
-        return cnt;
+        return heavyCnt[i];
     }
 
     public static void main(String[] args) throws IOException{
@@ -61,12 +51,6 @@ public class Main {
         }
 
         isStation = new boolean[N+1];
-        // 조회비용 무거운거만 캐싱함
-        isHeavy = new boolean[N+1];
-        for(int i=1; i<=N; i++){
-            if(board[i].size()>=B)
-                isHeavy[i] = true;
-        }
         heavyCnt = new int[N+1];
 
         while(Q-->0){
