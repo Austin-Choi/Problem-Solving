@@ -16,6 +16,6 @@ public class Main {
         for(int i = 0; i<L; i++){
             hash += ((temp[i]-'a'+1)*exptable[i])%MOD;
         }
-        System.out.print(hash);
+        System.out.print(hash % MOD);
     }
 }
