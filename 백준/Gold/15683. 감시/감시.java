@@ -25,13 +25,12 @@ public class Main {
             return;
         }
 
-
         int[] cctv = cctvs.get(idx);
         int si = cctv[0];
         int sj = cctv[1];
         int type = cctv[2];
 
-        for(ArrayList<Integer> dirs : getRange(type)){
+        for(ArrayList<Integer> dirs : ranges[type]){
             int[][] copy = copyBoard(board);
             // dirs 전체가 한 조합
             for(int d : dirs){
@@ -57,86 +56,32 @@ public class Main {
         }
         return copy;
     }
-    // 종류에 따라 가능한 탐색 범위 리턴
-    static ArrayList<ArrayList<Integer>> getRange(int type){
-        ArrayList<ArrayList<Integer>> rst = new ArrayList<>();
-        if(type == 1){
-            ArrayList<Integer> a = new ArrayList<>();
-            a.add(0);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(1);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(2);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(3);
-            rst.add(a);
-            return rst;
+    // 전처리후 배열로접근
+    static ArrayList<ArrayList<Integer>>[] ranges = new ArrayList[6];
+    static void initRanges(){
+        for(int i = 1; i<6; i++){
+            ranges[i] = new ArrayList<>();
         }
-        else if(type == 2){
-            ArrayList<Integer> a = new ArrayList<>();
-            a.add(0);
-            a.add(1);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(2);
-            a.add(3);
-            rst.add(a);
-            return rst;
-        }
-        else if(type == 3){
-            ArrayList<Integer> a = new ArrayList<>();
-            a.add(0);
-            a.add(2);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(0);
-            a.add(3);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(1);
-            a.add(3);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(1);
-            a.add(2);
-            rst.add(a);
-            return rst;
-        }
-        else if(type == 4){
-            ArrayList<Integer> a = new ArrayList<>();
-            a.add(0);
-            a.add(1);
-            a.add(2);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(0);
-            a.add(1);
-            a.add(3);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(0);
-            a.add(2);
-            a.add(3);
-            rst.add(a);
-            a = new ArrayList<>();
-            a.add(1);
-            a.add(2);
-            a.add(3);
-            rst.add(a);
-            return rst;
-        }
-        else{
-            ArrayList<Integer> a = new ArrayList<>();
-            a.add(0);
-            a.add(1);
-            a.add(2);
-            a.add(3);
-            rst.add(a);
-            return rst;
-        }
+
+        ranges[1].add(new ArrayList<>(List.of(0)));
+        ranges[1].add(new ArrayList<>(List.of(1)));
+        ranges[1].add(new ArrayList<>(List.of(2)));
+        ranges[1].add(new ArrayList<>(List.of(3)));
+
+        ranges[2].add(new ArrayList<>(List.of(0, 1)));
+        ranges[2].add(new ArrayList<>(List.of(2, 3)));
+
+        ranges[3].add(new ArrayList<>(List.of(0, 2)));
+        ranges[3].add(new ArrayList<>(List.of(0, 3)));
+        ranges[3].add(new ArrayList<>(List.of(1, 3)));
+        ranges[3].add(new ArrayList<>(List.of(1, 2)));
+
+        ranges[4].add(new ArrayList<>(List.of(0, 1, 2)));
+        ranges[4].add(new ArrayList<>(List.of(0, 1, 3)));
+        ranges[4].add(new ArrayList<>(List.of(0, 2, 3)));
+        ranges[4].add(new ArrayList<>(List.of(1, 2, 3)));
+
+        ranges[5].add(new ArrayList<>(List.of(0, 1, 2, 3)));
     }
     // 동 서 북 남
     static int[] di = {0,0,-1,1};
@@ -157,6 +102,8 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+
+        initRanges();
         board = new int[N][M];
         for(int i = 0; i<N; i++){
             st = new StringTokenizer(br.readLine());
@@ -168,6 +115,7 @@ public class Main {
                 }
             }
         }
+
         ans = N*M+2;
         dfs(0,board);
         System.out.print(ans);
