@@ -47,6 +47,7 @@ public class Main {
         Arrays.fill(prime, true);
 
         prime[0] = false;
+        // 1은 소수는 아니지만 문제 정의에 의해 gnum
         prime[1] = true;
 
         for(int i = 2; i*i<200; i++){
