@@ -4,6 +4,8 @@ public class Main {
     static int C,N,M;
     static char[][] board;
 
+    // 6방향으로 해야함
+    // -> 모든 충돌 구현
     static int[] di = {-1, 0, -1, 0,1 ,1};
     static int[] dj = {1,1, -1, -1,1,-1};
     // dest, cap, reverse
