@@ -1,4 +1,8 @@
-
+/*
+dfs 최적화 팁
+1) depth 8로 고정
+2) 보드 인덱스를 상태로 들고가서 각 단어 found에 마킹해주기
+ */
 /*
 일단 사전에 있는거 트라이에 넣음
 child, isEnd
@@ -50,7 +54,9 @@ public class Main {
     static String maxLenStr;
     static boolean[][] visited;
     static int found;
-    static void dfs(int i, int j, Node cur, int b){
+    static void dfs(int i, int j, int depth, Node cur, int b){
+        if(depth >= 8)
+            return;
         if(cur.isEnd && cur.lastFoundBoard != b){
             cur.lastFoundBoard = b;
             String ss = cur.actual;
@@ -80,7 +86,7 @@ public class Main {
             if(visited[ni][nj])
                 continue;
             visited[ni][nj] = true;
-            dfs(ni,nj,cur.children[board[ni][nj]-'A'], b);
+            dfs(ni,nj,depth+1, cur.children[board[ni][nj]-'A'], b);
             visited[ni][nj] = false;
         }
     }
@@ -115,7 +121,7 @@ public class Main {
                     if(trie.children[idx] == null)
                         continue;
                     visited[i][j] = true;
-                    dfs(i,j,trie.children[idx],b);
+                    dfs(i,j,0,trie.children[idx],b);
                     visited[i][j] = false;
                 }
             }
