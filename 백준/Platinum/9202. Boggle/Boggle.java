@@ -1,3 +1,4 @@
+
 /*
 일단 사전에 있는거 트라이에 넣음
 child, isEnd
@@ -6,7 +7,6 @@ child, isEnd
 isEnd = true면 단어 완성한거라 점수, 가장긴 단어 뭐 그런거 갱신하는거 하고
 false로 바꿔서 중복찾기 방지함
  */
-import java.util.*;
 import java.io.*;
 public class Main {
     static int[] di = {-1,-1,0,1,1,1,0,-1};
@@ -18,6 +18,7 @@ public class Main {
         Node[] children = new Node[26];
         boolean isEnd;
         String actual;
+        int lastFoundBoard = -1;
     }
     // 트라이는 한번만 boggle DFS는 각각의 board에 대해 여러번
     static Node trie = new Node();
@@ -49,30 +50,24 @@ public class Main {
     static String maxLenStr;
     static boolean[][] visited;
     static int found;
-    static HashSet<String> set;
-    static void dfs(int i, int j, Node cur){
-        if(cur.isEnd){
+    static void dfs(int i, int j, Node cur, int b){
+        if(cur.isEnd && cur.lastFoundBoard != b){
+            cur.lastFoundBoard = b;
             String ss = cur.actual;
+            score += getScore(ss);
+            found++;
 
-            if(!set.contains(ss)){
-                set.add(ss);
-                score += getScore(ss);
-                found++;
-
-                if(maxLenStr == null)
-                    maxLenStr = ss;
-                else{
-                    if(maxLenStr.length() == ss.length()){
-                        if(maxLenStr.compareTo(ss) > 0)
-                            maxLenStr = ss;
-                    }
-                    else if(maxLenStr.length() < ss.length())
+            if(maxLenStr == null)
+                maxLenStr = ss;
+            else{
+                if(maxLenStr.length() == ss.length()){
+                    if(maxLenStr.compareTo(ss) > 0)
                         maxLenStr = ss;
                 }
-                // 한번쓰면 복구안됨, 트라이는 건들면안됨
-                // cur.isEnd = false;
-                // 리턴없이 더깊게찾기
+                else if(maxLenStr.length() < ss.length())
+                    maxLenStr = ss;
             }
+            // 리턴없이 더깊게찾기
         }
 
         for(int d=0; d<8; d++){
@@ -85,7 +80,7 @@ public class Main {
             if(visited[ni][nj])
                 continue;
             visited[ni][nj] = true;
-            dfs(ni,nj,cur.children[board[ni][nj]-'A']);
+            dfs(ni,nj,cur.children[board[ni][nj]-'A'], b);
             visited[ni][nj] = false;
         }
     }
@@ -103,7 +98,6 @@ public class Main {
             score = 0;
             maxLenStr = null;
             found = 0;
-            set = new HashSet<>();
             visited = new boolean[4][4];
 
             board = new char[4][4];
@@ -121,7 +115,7 @@ public class Main {
                     if(trie.children[idx] == null)
                         continue;
                     visited[i][j] = true;
-                    dfs(i,j,trie.children[idx]);
+                    dfs(i,j,trie.children[idx],b);
                     visited[i][j] = false;
                 }
             }
