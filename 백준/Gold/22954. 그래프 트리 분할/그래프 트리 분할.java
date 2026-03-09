@@ -8,8 +8,13 @@ collect -> 분할된 간선 기준으로 sn쪽 서브트리(A) 수집
 2개 사이즈 다를대 출력
 3개부터 불가능
 -> 뭔가 틀리는데 모르겠음 .. 처음부터 다시
-
-1개면 그냥 마지막 노드 떼기
+ */
+/*
+모든 정점에 대해서 스패닝 트리를 만듬 visited 공유해야함(중복안되게)
+그래서 각자의 소속 정점, 간선을 리스트로 해서 저장함
+cn의 크기는 결국 컴포넌트 갯수가 되는데 이거 3개이상이면 안되고
+2개일때 사이즈 다른지 봐서 (cn[0],cn[1]) 출력하고
+1개면 그냥 하나떼서 출력함
  */
 import java.util.*;
 import java.io.*;
@@ -68,6 +73,7 @@ public class Main {
         }
         visited = new boolean[N+1];
 
+        // 컴포넌트당 노드 저장, 간선 저장
         List<List<Integer>> cN = new ArrayList<>();
         List<List<Integer>> cE = new ArrayList<>();
 
