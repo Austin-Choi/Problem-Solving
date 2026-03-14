@@ -13,7 +13,7 @@ public class Main {
     static int N;
     static StringBuilder sb;
     static void build(int pl, int pr, int il, int ir){
-        if(pl > pr)
+        if(pl > pr || il > ir)
             return;
 
         int root = pre[pl];
