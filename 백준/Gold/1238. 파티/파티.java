@@ -1,105 +1,75 @@
-import java.io.*;
+// X에서 시작해서 모든점 도달 + 모든점 한번씩에서 X
+// -> 최단거리 경로 자체는 달라도 역방 그래프로 놓으면 X->n으로 가는 경로를 뒤집은 대응 경로가 존재하기 때문에
+// -> 역방 그래프 계산용으로 놓고 다익 2번으로 최적화
 import java.util.*;
-
-class Node implements Comparable<Node>{
-    int end;
-    int weight;
-
-    public Node(int end, int weight){
-        this.end = end;
-        this.weight = weight;
-    }
-
-    @Override
-    public int compareTo(Node n){
-        return Integer.compare(this.weight, n.weight);
-    }
-}
-
+import java.io.*;
 public class Main {
-    private static boolean[] check;
-    private static int[] dist;
-    private static int N;
-    private static int M;
-    private static int X;
-
-    private static ArrayList<ArrayList<Node>> nodeList;
-
-    public static int dijkstra(int start, int end){
-        Arrays.fill(check, false);
-        //  M 10,000 * weight 100 = 1,000,000
-        Arrays.fill(dist, 1000000);
-
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.offer(new Node(start, 0));
+    static ArrayList<int[]>[] g;
+    static ArrayList<int[]>[] rg;
+    static int N,M,X;
+    static final int INF = 100*10000+1;
+    static int[] dijkstra(int start, ArrayList<int[]>[] gg){
+        int[] dist = new int[N+1];
+        Arrays.fill(dist, INF);
+        PriorityQueue<int[]> q = new PriorityQueue<>(Comparator.comparingInt(a->a[1]));
+        q.add(new int[]{start, 0});
         dist[start] = 0;
 
-        while(!pq.isEmpty()){
-            Node curNode = pq.poll();
-            int cur = curNode.end;
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+            int ci = cur[0];
+            int cd = cur[1];
 
-            if(!check[cur]){
-                check[cur] = true;
+            if(dist[ci] != cd)
+                continue;
 
-                for(Node n : nodeList.get(cur)){
-                    if(!check[n.end] && dist[n.end] > dist[cur] + n.weight){
-                        dist[n.end] = dist[cur] + n.weight;
-                        pq.offer(new Node(n.end, dist[n.end]));
-                    }
+            for(int[] n : gg[ci]){
+                if(dist[n[0]] > dist[ci] + n[1]){
+                    dist[n[0]] = dist[ci] + n[1];
+                    q.add(new int[]{n[0], dist[n[0]]});
                 }
-
             }
         }
-        return dist[end];
+        return dist;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         X = Integer.parseInt(st.nextToken());
-
-        // dijkstra 용 거리 갱신 배열
-        dist = new int[N+1];
-        check = new boolean[N+1];
-        nodeList = new ArrayList<>();
-
-        for(int i = 0; i<N+1; i++){
-            nodeList.add(new ArrayList<>());
+        g = new ArrayList[N+1];
+        rg = new ArrayList[N+1];
+        for(int i =1; i<=N; i++) {
+            g[i] = new ArrayList<>();
+            rg[i] = new ArrayList<>();
         }
 
         while(M-->0){
             st = new StringTokenizer(br.readLine());
-            int s = Integer.parseInt(st.nextToken());
-            int e = Integer.parseInt(st.nextToken());
-            int w = Integer.parseInt(st.nextToken());
-            nodeList.get(s).add(new Node(e,w));
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            int d = Integer.parseInt(st.nextToken());
+            g[u].add(new int[]{v,d});
+            rg[v].add(new int[]{u,d});
         }
 
-        int[] answer = new int[N+1];
 
-        /*
-        1~N에서부터 X까지의 값 배열로 저장
-        X에서부터 1~N까지의 값 배열로 저장
-        각 요소 더하고
-        그중 제일 큰 값 출력
-         */
-        for(int nn = 1; nn <= N; nn++){
-            // 집에서 파티장소까지 가는거
-            answer[nn-1] = dijkstra(nn, X);
-            // 파티장소에서 집까지 오는거
-            answer[nn-1] += dijkstra(X, nn);
+        int ans = -1;
+        int[] fromX = dijkstra(X, g);
+//        for(int i = 1; i<=N; i++){
+//            int[] toX = dijkstra(i);
+//            if(fromX[i] == INF || toX[X] == INF)
+//                continue;
+//            ans = Math.max(ans, fromX[i] + toX[X]);
+//        }
+        int[] toX = dijkstra(X, rg);
+        for(int i = 1; i<=N; i++) {
+            if (fromX[i] == INF || toX[X] == INF)
+                continue;
+            ans = Math.max(ans, fromX[i] + toX[i]);
         }
-        PriorityQueue<Integer> ans = new PriorityQueue<>(Collections.reverseOrder());
-        for(int n : answer){
-            ans.add(n);
-        }
-        bw.write(ans.poll() + "\n");
-        bw.flush();
-        bw.close();
-        br.close();
+        System.out.print(ans);
     }
 }
