@@ -32,6 +32,8 @@ public class Main {
 
             for(int[] i : board[cd]){
                 int nd = i[0];
+                if(i[1] > M)
+                    continue;;
                 int nc = cc + i[1];
                 int nt = ct + i[2];
                 
