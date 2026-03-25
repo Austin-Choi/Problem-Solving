@@ -7,6 +7,8 @@ INF면 -1
 
 int형 오버플로 이슈, inQ 초기화 문제
 cnt도 갱신될때만 ++
+
+휴리스틱 최적화 -> spfa
  */
 import java.util.*;
 import java.io.*;
@@ -38,12 +40,11 @@ public class Main {
                 if(dist[cu] != INF && dist[ni] > dist[cu] + nd){
                     dist[ni] = dist[cu] + nd;
 
-                    if(cnt[ni] >= N)
-                        return new long[]{-1};
-
                     if(!inQ[ni]){
                         q.add(ni);
                         cnt[ni]++;
+                        if(cnt[ni] >= N)
+                            return new long[]{-1};
                         inQ[ni] = true;
                     }
                 }
