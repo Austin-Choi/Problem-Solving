@@ -16,11 +16,11 @@ public class Main {
     static long[] price;
     //무방향
     static ArrayList<int[]>[] g;
-    static int[] bestMinIdx;
+    static long[] bestMinPrice;
     static long dijkstra(int start){
         // i 도착 기준 지금까지 기록된 상태 중 가장 싼 주유소
-        bestMinIdx = new int[N+1];
-        Arrays.fill(bestMinIdx, Integer.MAX_VALUE);
+        bestMinPrice = new long[N+1];
+        Arrays.fill(bestMinPrice, Integer.MAX_VALUE);
 
         long[][] dist = new long[N+1][N+1];
         for(int i = 1; i<=N; i++)
@@ -39,10 +39,10 @@ public class Main {
             if(cd != dist[ci][minIdx])
                 continue;
 
-            if(bestMinIdx[ci] != Integer.MAX_VALUE
-                    && price[bestMinIdx[ci]] < price[minIdx])
+            if(bestMinPrice[ci] != Integer.MAX_VALUE
+                    && bestMinPrice[ci] < price[minIdx])
                 continue;
-            bestMinIdx[ci] = minIdx;
+            bestMinPrice[ci] = price[minIdx];
 
             for(int[] n : g[ci]){
                 int ni = n[0];
