@@ -69,13 +69,13 @@ class Solution {
 
         for(int i = 0; i < N; i++){
             for(int j = 0; j < M; j++){
-
-                // size 0
                 set.add(g[i][j]);
 
-                for(int k = 2; ; k += 2){ // 반드시 2씩 증가
+                int maxK = Math.min(N - 1 - i, 2 * Math.min(j, M - 1 - j));
+                maxK -= maxK % 2; // 짝수 맞추기
+
+                for(int k = 2; k <= maxK; k += 2){
                     int sum = getRombusSum(i, j, k);
-                    if(sum == -1) break;
                     set.add(sum);
                 }
             }
