@@ -13,6 +13,7 @@ etc.
 ## Math
 |  |
 | ------- |
+| [0390-elimination-game](https://github.com/Austin-Choi/Problem-Solving/tree/master/0390-elimination-game) |
 | [1878-get-biggest-three-rhombus-sums-in-a-grid](https://github.com/Austin-Choi/Problem-Solving/tree/master/1878-get-biggest-three-rhombus-sums-in-a-grid) |
 ## Sorting
 |  |
@@ -42,4 +43,8 @@ etc.
 |  |
 | ------- |
 | [1781-sum-of-beauty-of-all-substrings](https://github.com/Austin-Choi/Problem-Solving/tree/master/1781-sum-of-beauty-of-all-substrings) |
+## Recursion
+|  |
+| ------- |
+| [0390-elimination-game](https://github.com/Austin-Choi/Problem-Solving/tree/master/0390-elimination-game) |
 <!---LeetCode Topics End-->
