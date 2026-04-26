@@ -10,6 +10,7 @@ etc.
 |  |
 | ------- |
 | [1878-get-biggest-three-rhombus-sums-in-a-grid](https://github.com/Austin-Choi/Problem-Solving/tree/master/1878-get-biggest-three-rhombus-sums-in-a-grid) |
+| [1929-concatenation-of-array](https://github.com/Austin-Choi/Problem-Solving/tree/master/1929-concatenation-of-array) |
 ## Math
 |  |
 | ------- |
@@ -47,4 +48,8 @@ etc.
 |  |
 | ------- |
 | [0390-elimination-game](https://github.com/Austin-Choi/Problem-Solving/tree/master/0390-elimination-game) |
+## Simulation
+|  |
+| ------- |
+| [1929-concatenation-of-array](https://github.com/Austin-Choi/Problem-Solving/tree/master/1929-concatenation-of-array) |
 <!---LeetCode Topics End-->
