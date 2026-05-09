@@ -37,6 +37,7 @@ etc.
 ## Hash Table
 |  |
 | ------- |
+| [0133-clone-graph](https://github.com/Austin-Choi/Problem-Solving/tree/master/0133-clone-graph) |
 | [1781-sum-of-beauty-of-all-substrings](https://github.com/Austin-Choi/Problem-Solving/tree/master/1781-sum-of-beauty-of-all-substrings) |
 ## String
 |  |
@@ -54,4 +55,16 @@ etc.
 |  |
 | ------- |
 | [1929-concatenation-of-array](https://github.com/Austin-Choi/Problem-Solving/tree/master/1929-concatenation-of-array) |
+## Depth-First Search
+|  |
+| ------- |
+| [0133-clone-graph](https://github.com/Austin-Choi/Problem-Solving/tree/master/0133-clone-graph) |
+## Breadth-First Search
+|  |
+| ------- |
+| [0133-clone-graph](https://github.com/Austin-Choi/Problem-Solving/tree/master/0133-clone-graph) |
+## Graph Theory
+|  |
+| ------- |
+| [0133-clone-graph](https://github.com/Austin-Choi/Problem-Solving/tree/master/0133-clone-graph) |
 <!---LeetCode Topics End-->
