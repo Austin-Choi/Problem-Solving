@@ -34,7 +34,12 @@ public class Main {
                     int ni = i;
                     int nj = j;
                     int cnt = 0;
-                    while(cnt < 2){
+                    // 여기서 
+                    while(true){
+                        if(cnt == 2){
+                            ans++;
+                            break;
+                        }
                         ni = ni + di[d];
                         nj = nj + dj[d];
                         if(ni < 0 || nj < 0 || ni >= N || nj >= M)
@@ -43,8 +48,7 @@ public class Main {
                             break;
                         cnt++;
                     }
-                    if(cnt == 2)
-                        ans++;
+                    
                 }
             }
         }
