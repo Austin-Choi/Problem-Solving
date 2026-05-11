@@ -1,6 +1,6 @@
 # Problem-Solving
-This is a auto push repository for Problem solving Sites, 
+This is an auto push repository for Online Judge sites.
+
 BOJ
 Programmers
 CodeTree
-etc.
