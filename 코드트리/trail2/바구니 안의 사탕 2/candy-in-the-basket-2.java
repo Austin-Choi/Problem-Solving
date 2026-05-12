@@ -23,16 +23,12 @@ public class Main {
 
         A = new int[101];
         int[] ps= new int[102];
-        int minIdx = 102;
-        int maxIdx = -1;
 
         // 유효한 idx가 중앙값으로 잡혀야될듯
         for(int i = 0; i<N; i++){
             st = new StringTokenizer(br.readLine());
             int candy = Integer.parseInt(st.nextToken());
             int idx = Integer.parseInt(st.nextToken());
-            minIdx = Math.min(minIdx, idx);
-            maxIdx = Math.max(maxIdx, idx);
             // 같은 위치에 여러 바구니 가능!!!!
             A[idx] += candy;
         }
