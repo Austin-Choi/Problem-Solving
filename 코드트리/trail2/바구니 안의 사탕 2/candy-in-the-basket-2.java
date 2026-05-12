@@ -8,7 +8,6 @@ import java.io.*;
 일단 A를 A[][0] 오름차순으로 정렬해서
 c의 범위는 A[0][0] ~ A[N-1][0]이 되도록 함
 -> 정렬하면 n log n이니까 그냥 입력받을때 최대 최소값 갱신하기
--> 이러면 중심값이 idx 값이 아닐때 최대값을 놓쳐서 그냥 0~100보기
 */
 
 public class Main {
@@ -24,12 +23,16 @@ public class Main {
 
         A = new int[101];
         int[] ps= new int[102];
+        int minIdx = 102;
+        int maxIdx = -1;
 
         // 유효한 idx가 중앙값으로 잡혀야될듯
         for(int i = 0; i<N; i++){
             st = new StringTokenizer(br.readLine());
             int candy = Integer.parseInt(st.nextToken());
             int idx = Integer.parseInt(st.nextToken());
+            minIdx = Math.min(minIdx, idx);
+            maxIdx = Math.max(maxIdx, idx);
             // 같은 위치에 여러 바구니 가능!!!!
             A[idx] += candy;
         }
@@ -39,7 +42,7 @@ public class Main {
         }
         
         int ans = 0;
-        for(int s = 0; s<=100; s++){
+        for(int s = minIdx; s<=maxIdx; s++){
             // 이상 이하라서 끝점에 +1
             int curSum = ps[Math.min(100, s+K)+1] - ps[Math.max(0, s-K)];
             ans = Math.max(ans, curSum);
