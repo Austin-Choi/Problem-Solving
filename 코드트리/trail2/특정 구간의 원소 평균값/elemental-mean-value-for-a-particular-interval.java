@@ -28,12 +28,15 @@ public class Main {
             for(int i = 0; i<=N-k; i++){
                 int curSum = ps[i+k] - ps[i];
 
-                Set<Integer> ss = new HashSet<>();
+                if(curSum%k != 0)
+                    continue;
+
                 for(int s = i; s<i+k; s++){
-                    ss.add(A[s]);
+                    if(curSum/k == A[s]){
+                        ans++;
+                        break;
+                    }
                 }
-                if(curSum%k == 0 && ss.contains(curSum/k))
-                    ans++;
             }
         }
         System.out.print(ans);
