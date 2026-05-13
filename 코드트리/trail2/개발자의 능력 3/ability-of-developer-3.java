@@ -2,11 +2,8 @@ import java.util.*;
 import java.io.*;
 
 /*
-음 파라메트릭 서치??
-가능한 능력 차이 구간 [0, total]
-이걸 최소화해야함
-
-can 함수 N/2명을 뽑았을때 합이 X가 되는가?
+dfs로 전부 뽑아서 보는데 
+뽑을때 중복 조합이 있으면 안되므로 dfs(i+1, depth+1)
 */
 
 public class Main {
