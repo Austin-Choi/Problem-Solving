@@ -13,6 +13,7 @@ import java.io.*;
 */
 
 public class Main {
+    static final StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
     static int N;
     static ArrayList<Integer>[] g;
     static boolean[] visited;
@@ -48,16 +49,16 @@ public class Main {
             for(int i = 0; i<curSize; i++){
                 int cur = q.poll();
 
-                boolean hasNext = false;
+                int cnt = 0;
                 for(int n : g[cur]){
                     if(visited[n])
                         continue;
-                    
-                    hasNext = true;
+                
                     visited[n] = true;
                     q.add(n);
+                    cnt++;
                 }
-                if(!hasNext)
+                if(cnt == 0)
                     total += depth;
             }
             //한 레벨 노드들 처리 끝났으니 depth 증가
@@ -67,18 +68,21 @@ public class Main {
         return total;
     }
 
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N= Integer.parseInt(br.readLine());
+    static int read() throws Exception {
+        st.nextToken();
+        return (int) st.nval;
+    }
+
+    public static void main(String[] args) throws Exception{
+        N= read();
         g = new ArrayList[N+1];
         for(int i = 1; i<=N; i++)
             g[i] = new ArrayList<>();
         
         int M = N-1;
         while(M-->0){
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
+            int u = read();
+            int v = read();
             // 무방향이라 입력 양방향으로 넣어야함!!
             g[u].add(v);
             g[v].add(u);
