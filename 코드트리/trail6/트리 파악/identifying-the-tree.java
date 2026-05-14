@@ -35,6 +35,38 @@ public class Main {
         return total;
     }
 
+    // 트리니까 레벨 bfs로 해도 될듯
+    static int bfs(int si){
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(si);
+        int depth = 0;
+        int total = 0;
+
+        while(!q.isEmpty()){
+            //이전 노드의 자식들
+            int curSize = q.size();
+            for(int i = 0; i<curSize; i++){
+                int cur = q.poll();
+
+                boolean hasNext = false;
+                for(int n : g[cur]){
+                    if(visited[n])
+                        continue;
+                    
+                    hasNext = true;
+                    visited[n] = true;
+                    q.add(n);
+                }
+                if(!hasNext)
+                    total += depth;
+            }
+            //한 레벨 노드들 처리 끝났으니 depth 증가
+            depth++;
+        }
+
+        return total;
+    }
+
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N= Integer.parseInt(br.readLine());
@@ -54,7 +86,8 @@ public class Main {
 
         visited = new boolean[N+1];
         visited[1] = true;
-        int tot = dfs(1,0);
+        //int tot = dfs(1,0);
+        int tot = bfs(1);
         if(tot % 2 == 1)
             System.out.print(1);
         else
