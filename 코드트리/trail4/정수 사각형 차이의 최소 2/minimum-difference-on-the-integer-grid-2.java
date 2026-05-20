@@ -13,7 +13,7 @@ dp[i][j][max][min] 이러면 터지지 않나 크기가 1억인데;
 -> 값다 받아와서 arr
 
 bfs(min, max)
--> 1,1 - n,n 경로에 있는 모든 값이 해당 구간을 만족하는지
+-> 1,1 - n,n 경로에 있는 모든 값이 해당 구간을 만족하는
 
 */
 
@@ -27,7 +27,7 @@ public class Main {
 
     static int N;
     static int[][] board;
-    static List<Integer> arr = new ArrayList<>();
+    static SortedSet<Integer> ss = new TreeSet<>();
     static int[] di = {1,0};
     static int[] dj = {0,1};
 
@@ -70,10 +70,11 @@ public class Main {
         for(int i = 0; i<N; i++){
             for(int j = 0; j<N; j++){
                 board[i][j] = read();
-                arr.add(board[i][j]);
+                ss.add(board[i][j]);
             }
         }
-        Collections.sort(arr);
+        // 중복제거라 더 빠름
+        List<Integer> arr = new ArrayList<>(ss);
         
         int l = 0;
         int r = 0;
