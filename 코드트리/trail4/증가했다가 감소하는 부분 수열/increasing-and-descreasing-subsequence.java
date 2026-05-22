@@ -5,8 +5,10 @@ import java.io.*;
 dp1[i] = i까지 봤을때 증가 수열 최대 길이
 dp2[i] = i부터 시작했을때 감소 수열 최대 길이 
 -> 그냥 뒤에서부터 증가수열 최대 길이
-dp[i] = max(dp1[i] + dp2[i])
+-> 인덱스 방향 바뀐거 고려해줘야 함 (N-1-i,j)
 
+i = [0,N-1]
+dp[i] = max(dp1[i] + dp2[i]-1)
 */
 
 public class Main {
