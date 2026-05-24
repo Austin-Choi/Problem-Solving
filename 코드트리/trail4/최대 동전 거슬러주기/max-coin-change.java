@@ -20,7 +20,7 @@ public class Main {
         for(int i= 0; i<N; i++){
             A[i] = read();
         }
-        Arrays.sort(A);
+        //Arrays.sort(A);
 
         int[] dp = new int[M+1];
         int INF = M / A[0] + 2;
