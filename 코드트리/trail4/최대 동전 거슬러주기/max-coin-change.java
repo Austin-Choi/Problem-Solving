@@ -23,14 +23,14 @@ public class Main {
         //Arrays.sort(A);
 
         int[] dp = new int[M+1];
-        int INF = M / A[0] + 2;
-        Arrays.fill(dp, -1);
+        int INF = 10001;
+        Arrays.fill(dp, -INF);
         dp[0] = 0;
 
         for(int i =0 ; i<N; i++){
             int cur = A[i];
             for(int j = cur; j<=M; j++){
-                if(dp[j-cur] != -1)
+                //if(dp[j-cur] != -1)
                     dp[j] = Math.max(dp[j], dp[j-cur]+1);
             }
         }
