@@ -35,30 +35,40 @@ public class Main {
         }
 
         // i개를 선택했을때 합이 j가 가능한가?
-        boolean[][] dp1 = new boolean[N+1][tot+1];
-        dp1[0][0] = true;
+        // boolean[][] dp1 = new boolean[N+1][tot+1];
+        // dp1[0][0] = true;
+
+        // for(int i = 0; i<N; i++){
+        //     int cur = A[i];
+        //     // 갯수 역순
+        //     for(int cc = N; cc >= 1; cc--){
+        //         // 가능한 합 역순
+        //         for(int j = tot-cur; j>=0; j--){
+        //             // cur을 선택하지 않은 이전 상태가 가능하면 (cc-1개, 총합은 j)
+        //             // 다음 상태 (cc : cur 선택함 (cc인건 역순이라), 총합은 j + cur)
+        //             if(dp1[cc-1][j]){
+        //                 dp1[cc][j+cur] = true;
+        //             }
+        //         }
+        //     }
+        // }
+
+        // 압축하면 이렇게 가능
+        // dp[i]= 합 i 가 가능한지
+        boolean[] dp = new boolean[tot+1];
+        dp[0] = true;
 
         for(int i = 0; i<N; i++){
             int cur = A[i];
-            // 갯수 역순
-            for(int cc = N; cc >= 1; cc--){
-                // 가능한 합 역순
-                for(int j = tot-cur; j>=0; j--){
-                    // cur을 선택하지 않은 이전 상태가 가능하면 (cc-1개, 총합은 j)
-                    // 다음 상태 (cc : cur 선택함 (cc인건 역순이라), 총합은 j + cur)
-                    if(dp1[cc-1][j]){
-                        dp1[cc][j+cur] = true;
-                    }
-                }
+            for(int j = tot; j >= cur; j--){
+                dp[j] |= dp[j-cur];
             }
         }
 
         int ans = 100 * 1000 + 1;
-        for(int i = 1; i<N; i++){
-            for(int j = 0; j<=tot; j++){
-                if(dp1[i][j])
-                    ans = Math.min(ans, Math.abs(tot - (2*j)));
-            }
+        for(int j = 0; j<=tot; j++){
+            if(dp[j])
+                ans = Math.min(ans, Math.abs(tot - (2*j)));
         }
         System.out.print(ans);
     }
