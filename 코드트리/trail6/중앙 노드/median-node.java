@@ -18,7 +18,6 @@ public class Main {
 
     static int N, R;
     static ArrayList<Integer>[] g;
-    static int parent;
     static int[] dp;
 
     static int findMid(int ci, int p){
@@ -27,18 +26,16 @@ public class Main {
         if(p == -1)
             size += 1;
 
-        if(size >= 2 || size == 0){
-            parent = p;
+        if(size >= 2 || size == 0)
             return ci;
-        }
-
+        
         for(int n : g[ci]){
             if(n == p)
                 continue;
             return findMid(n, ci);
         }
 
-        return ci;
+        return 0;
     }
 
     static int dfs(int ci, int prev){
