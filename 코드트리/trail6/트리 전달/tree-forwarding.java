@@ -10,7 +10,9 @@ N이랑 M이 둘다 최대 10만인데
 그럼 그래프 구성하고 서브트리 리스트를 구해놔도 전처리로
 매번 dfs하는거나 리스트 참조해서 rst[i] += w 하나 똑같지않나..
 
-
+dp[i] = 노드 i에서 직접 시작된 점수 증가량
+딱히 dp는 아니지만 값 전파 방향은 부모 -> 자식 (dfs 순서)
+-> 각 노드의 조상들에 적혀있는 수의 합 모두 구하기
 */
 
 public class Main {
@@ -24,17 +26,17 @@ public class Main {
     static int N,M;
     static int[] parent;
     static ArrayList<Integer>[] g;
-    static int[] dp;
+    static int[] toAdd;
     static int[] rst;
 
+    // tot = 부모들로부터 누적되어 내려온 점수 증가량
     static void dfs(int ci, int tot){
-        tot += dp[ci];
+        tot += toAdd[ci];
         rst[ci] = tot;
 
         for(int n : g[ci]){
             if(n == parent[ci])
                 continue;
-            rst[n] += tot;
             dfs(n, tot);
         }
     }
@@ -57,13 +59,13 @@ public class Main {
         }
         
         //1이 루트라고함
-        dp = new int[N+1];
+        toAdd = new int[N+1];
         rst = new int[N+1];
         while(M-->0){
             int i = read();
             int w = read();
             // i번 노드에 더해야할 점수 갱신
-            dp[i] += w;
+            toAdd[i] += w;
         }
 
         dfs(1,0);
