@@ -1,0 +1,97 @@
+import java.util.*;
+import java.io.*;
+
+/*
+dp[u][c][k] = u를 루트노드로 갖는 서브트리 내에서 색칠된 상태가 c일때 정확히 색칠한 노드의 갯수가 k일때 노드 최대 합
+next = long[2][K+1]
+next[0][i+j] = max(next[0][i+j], dp[u][0][i] + max(dp[v][0][j], dp[v][1][j]))
+next[1][i+j] = max(next[1][i+j], dp[u][1][i] + dp[v][0][j])
+
+*/
+
+public class Main {
+    static StreamTokenizer sst = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
+
+    static int read() throws IOException{
+        sst.nextToken();
+        return (int) sst.nval;
+    }
+
+    static int N,K;
+    static long[] A;
+    static ArrayList<Integer>[] g;
+    static long[][][] dp;
+    static final long INF = -(1<<60);
+
+    static void dfs(int u, int parent){
+        for(int i = 0; i<2; i++){
+            Arrays.fill(dp[u][i], INF);
+        }
+        dp[u][0][0] = 0;
+        dp[u][1][1] = A[u];
+
+        // 배낭 부분해 merge
+        for(int v : g[u]){
+            if(v == parent)
+                continue;
+            dfs(v, u);
+            
+            long[][] next = new long[2][K+1];
+            // 반드시 초기화해줘야 함
+            for(int i = 0; i<2; i++){
+                Arrays.fill(next[i], INF);
+            }
+
+            for(int i = 0; i<=K; i++){
+                for(int j = 0; i+j<=K; j++){
+                    // 현재가 선택 안됬으면 자식은 선택해도 되고 안해도 되는데 그중 큰거 
+                    if(dp[u][0][i] != INF){
+                        long bestChild = Math.max(dp[v][0][j], dp[v][1][j]);
+                        if(bestChild != INF){
+                            next[0][i+j] = Math.max(next[0][i+j], dp[u][0][i] + bestChild);
+                        }
+                    }
+                    
+                    // 현재가 선택됬으면 자식은 선택하면 안됨.
+                    if(dp[u][1][i] != INF){
+                        if(dp[v][0][j] != INF){
+                            next[1][i+j] = Math.max(next[1][i+j], dp[u][1][i] + dp[v][0][j]);
+                        }
+                    }
+                }
+            }
+
+            dp[u] = next; 
+        }
+    }
+
+    public static void main(String[] args) throws IOException{
+        N = read();
+        g = new ArrayList[N+1];
+        for(int i = 1; i<=N; i++)
+            g[i] = new ArrayList<>();
+
+        int M = N-1;
+        while(M-->0){
+            int u = read();
+            int v = read();
+            g[u].add(v);
+            g[v].add(u);
+        }
+
+        A = new long[N+1];
+        for(int i = 1; i<=N; i++){
+            A[i] = read();
+        }
+        K = read();
+
+        dp = new long[N+1][2][K+1];
+        dfs(1, -1);
+        long ans = INF;
+        for(int i =0; i<2; i++){
+            for(long sum : dp[1][i])
+                ans = Math.max(ans, sum);
+        }
+        System.out.print(ans);
+    }
+}
