@@ -2,10 +2,21 @@ import java.util.*;
 import java.io.*;
 
 /*
-dp[u][c][k] = u를 루트노드로 갖는 서브트리 내에서 색칠된 상태가 c일때 정확히 색칠한 노드의 갯수가 k일때 노드 최대 합
-next = long[2][K+1]
-next[0][i+j] = max(next[0][i+j], dp[u][0][i] + max(dp[v][0][j], dp[v][1][j]))
-next[1][i+j] = max(next[1][i+j], dp[u][1][i] + dp[v][0][j])
+dp[u][c][K] = u를 루트노드로 갖는 서브트리에서 u의 색칠 상태가 c일때 정확히 k개를 색칠하여 얻는 노드값 최대 합
+-> 색칠된 노드끼리는 인접하면 안됨
+-> 배낭문제처럼 하는건데 이제 자식끼리에서 merge???
+for(i)
+    for(j)
+        next[i+j] = old[i] + child[j]
+
+if(k < K)-> i+j로 이미 제한해서 필요없음
+
+next[u][0][i] = max(next[u][0][i], dp[u][0][i] + max(dp[v][1][j], dp[v][0][j]))
+next[u][1][i] = max(next[u][1][i], dp[u][1][i] + dp[v][0][j])
+
+-> next[u] 고정이라서 next는 long[2][k+1]로만 복사
+next[0][i] = max(next[0][i], dp[u][0][i] + max(dp[v][1][j], dp[v][0][j]))
+next[1][i] = max(next[1][i], dp[u][1][i] + dp[v][0][j])
 
 서브트리 기반으로 i,j 순회 줄이기?? 
 -> u 서브트리 내에서 실제 선택가능한 노드 수는 서브트리 크기를 절대 넘을 수 없음
