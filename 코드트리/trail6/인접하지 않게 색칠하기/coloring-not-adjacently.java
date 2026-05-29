@@ -7,6 +7,9 @@ next = long[2][K+1]
 next[0][i+j] = max(next[0][i+j], dp[u][0][i] + max(dp[v][0][j], dp[v][1][j]))
 next[1][i+j] = max(next[1][i+j], dp[u][1][i] + dp[v][0][j])
 
+서브트리 기반으로 i,j 순회 줄이기?? 
+-> u 서브트리 내에서 실제 선택가능한 노드 수는 서브트리 크기를 절대 넘을 수 없음
+
 */
 
 public class Main {
@@ -23,12 +26,19 @@ public class Main {
     static long[][][] dp;
     static final long INF = -(1<<60);
 
+    static int[] sz;
+
     static void dfs(int u, int parent){
+        sz[u] = 1;
+
         for(int i = 0; i<2; i++){
             Arrays.fill(dp[u][i], INF);
         }
         dp[u][0][0] = 0;
         dp[u][1][1] = A[u];
+
+        // 현재까지 merge 완료된 u쪽 노드 갯수
+        int curSize = 1;
 
         // 배낭 부분해 merge
         for(int v : g[u]){
@@ -42,8 +52,9 @@ public class Main {
                 Arrays.fill(next[i], INF);
             }
 
-            for(int i = 0; i<=K; i++){
-                for(int j = 0; i+j<=K; j++){
+            // 서브트리 내 노드수로 순회 최적화
+            for(int i = 0; i<=Math.min(curSize, K); i++){
+                for(int j = 0; j<=Math.min(sz[v], K-i); j++){
                     // 현재가 선택 안됬으면 자식은 선택해도 되고 안해도 되는데 그중 큰거 
                     if(dp[u][0][i] != INF){
                         long bestChild = Math.max(dp[v][0][j], dp[v][1][j]);
@@ -62,11 +73,14 @@ public class Main {
             }
 
             dp[u] = next; 
+            curSize += sz[v];
         }
+        sz[u] = curSize;
     }
 
     public static void main(String[] args) throws IOException{
         N = read();
+        sz = new int[N+1];
         g = new ArrayList[N+1];
         for(int i = 1; i<=N; i++)
             g[i] = new ArrayList<>();
