@@ -8,15 +8,15 @@ parent[i][u] = 햔재 노드 u에서 2^i번 위로 올라가면 도착하는 노
 2) parent = new int[LOG][N+1]
 3) dfs로 depth 구함, 루트 1번이라고 주어짐 
 -> parent[0][N+1] = 바로 위 노드
-4) parent[1 ~ LOG][N+1] 구하기
+4) parent[1 ~ LOG-1][N+1] 구하기
 -> parent[i][u] = parent[i-1][parent[i-1][u]]
 
 LCA
 5) a depth가 크게 a,b 맞춰주고
-6) diff = depth[a] - depth[b] 이라하면, diff = [0,depth[a]]이고 i = [0,LOG]일때
+6) diff = depth[a] - depth[b] 이라하면, diff = [0,depth[a]]이고 i = [LOG-1, 0]일때
 예를 들어 diff = 1101(2) 라고 하면
 diff & (1<<i) != 0 이면 해당 2진수 자리 1이니까 그때 점프하면 됨 
-7) i = [LOG, 1] 일때 parent[i][a] != parent[i][b]이면 a=parent[i][a], b=parent[i][b] 
+7) i = [LOG-1, 0] 일때 parent[i][a] != parent[i][b]이면 a=parent[i][a], b=parent[i][b] 
 8) return parent[0][a]
 */
 
