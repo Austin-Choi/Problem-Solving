@@ -46,6 +46,7 @@ public class Main {
             size[i] = 1;
         }
 
+        StringBuilder sb = new StringBuilder();
         while(M-->0){
             int type = read();
             if(type == 0)
@@ -54,10 +55,11 @@ public class Main {
                 int a = read();
                 int b = read();
                 if(find(a) == find(b))
-                    System.out.println(1);
+                    sb.append(1).append("\n");
                 else
-                    System.out.println(0);
+                    sb.append(0).append("\n");
             }
         }
+        System.out.print(sb);
     }
 }
