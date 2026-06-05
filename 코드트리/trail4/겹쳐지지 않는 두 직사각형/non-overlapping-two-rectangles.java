@@ -8,7 +8,9 @@ import java.io.*;
 
 누적합 전처리해가지고 직사각형 합 빨리 계산하기?
 -> si,sj 세로 =r, 가로=c
--> psum[si+r][sj+c] - psum[si][sj+c] - psum[si+r][sj] + psum[si][sj];
+-> psum[ei][ej] - psum[si-1][ej] - psum[ei][sj-1] + psum[si-1][sj-1];
+
+r,c 각각 다르게 해야해서 어쩔수 없이 r c r c 이렇게 만듬
 */
 
 public class Main {
