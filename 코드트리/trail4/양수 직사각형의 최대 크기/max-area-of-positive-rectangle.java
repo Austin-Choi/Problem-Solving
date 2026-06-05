@@ -18,23 +18,23 @@ public class Main {
     static int N, M;
     static int[][] board;
 
-    static int largestRectangle(int[] height) {
-        Stack<Integer> stack = new Stack<>();
+    static int find(int[] height) {
+        Deque<Integer> s = new ArrayDeque<>();
         int maxArea = 0;
 
         for (int i = 0; i <= M; i++) {
             int curHeight = (i == M ? 0 : height[i]);
-            while (!stack.isEmpty() && height[stack.peek()] > curHeight) {
-                int h = height[stack.pop()];
+            while (!s.isEmpty() && height[s.peekFirst()] > curHeight) {
+                int h = height[s.pollFirst()];
                 int w;
-                if (stack.isEmpty())
+                if (s.isEmpty())
                     w = i;
                 else 
-                    w = i - stack.peek() - 1;
+                    w = i - s.peekFirst() - 1;
                 maxArea = Math.max(maxArea, h * w);
             }
             if (i < M)
-                stack.push(i);
+                s.addFirst(i);
         }
         return maxArea;
     }
@@ -58,7 +58,7 @@ public class Main {
                 else
                     height[j] = 0;
             }
-            ans = Math.max(ans, largestRectangle(height));
+            ans = Math.max(ans, find(height));
         }
         System.out.println(ans == 0 ? -1 : ans);
     }
