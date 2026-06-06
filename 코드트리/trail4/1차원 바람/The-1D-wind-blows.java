@@ -83,8 +83,31 @@ public class Main {
         board[a] = copy;
     }
 
+    //in-place 버전 copy 안쓰는거
+    // -> 방향 구현하면서 inplace에서 30분 넘게 구현문제 걸림
+    // -> 템플릿 : 왼->오 면 맨 오른쪽 temp, [M-2, 0] -> board[j+1] = board[j] 해주고 board[0] = temp;
+    // 오->왼 이면 맨 왼쪽 temp, [1, M-1] -> board[j-1] = board[j] 해주고 board[M-1] = temp;
+    static void shift2(int a, int dir){
+        // 왼->오
+        if(dir == 1){
+            int temp = board[a][M-1];
+            for(int j=M-2;j>=0;j--){
+                board[a][j+1] = board[a][j];
+            }
+            board[a][0] = temp;
+        }
+        // 오->왼
+        else{
+            int temp = board[a][0];
+            for(int j=1;j<M;j++){
+                board[a][j-1] = board[a][j];
+            }
+            board[a][M-1] = temp;
+        }
+    }
+
     static void wind(int srow, int sdir){
-        shift(srow, sdir);
+        shift2(srow, sdir);
 
         int updir = sdir;
         int downdir = sdir;
@@ -94,13 +117,13 @@ public class Main {
         // 위쪽 전파하고 아래쪽 전파 한번씩 하고 다시 
         while((uprow>=1) && hasSameVal(uprow, uprow-1)){
             updir = 1 - updir;
-            shift(uprow-1, updir);
+            shift2(uprow-1, updir);
             uprow--;
         }
 
         while((downrow < N-1) && hasSameVal(downrow, downrow+1)){
             downdir = 1- downdir;
-            shift(downrow+1, downdir);
+            shift2(downrow+1, downdir);
             downrow++;
         }
     }
