@@ -26,6 +26,7 @@ public class Main {
     static int[] di = {-1, 1, 0, 0};
     static int[] dj = {0, 0, -1, 1};
 
+    // 1) 일단 0으로 터진부분 비움
     static void bomb(int si, int sj) {
         int range = board[si][sj];
 
@@ -44,6 +45,9 @@ public class Main {
         }
     }
 
+    // 2) 터진부분 고려해서 모든 열을 보면서 만약 현재 보드에서 칸 값이 0 이면
+    // 아래쪽부터 채우는데 0이 아닐때만 채움
+    // temp 길이는 board 각 세로 열 길이랑 같게 잡음 위에 0 남겨야해서
     static void gravity() {
         for (int j = 0; j < N; j++) {
             int[] temp = new int[N];
@@ -63,22 +67,18 @@ public class Main {
 
     static void print() {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 sb.append(board[i][j]).append(" ");
             }
             sb.append("\n");
         }
-
         System.out.print(sb);
     }
 
     public static void main(String[] args) throws Exception {
         N = read();
-
         board = new int[N][N];
-
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 board[i][j] = read();
@@ -90,7 +90,6 @@ public class Main {
 
         bomb(r, c);
         gravity();
-
         print();
     }
 }
