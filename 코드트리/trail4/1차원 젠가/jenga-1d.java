@@ -39,6 +39,16 @@ public class Main {
         A = temp;
     }
 
+    static void remove2(int s, int e){
+        s--;
+        e--;
+        int[] temp = new int[A.length - (e-s+1)];
+        System.arraycopy(A, 0, temp, 0, s);
+        System.arraycopy(A, e+1, temp, s, A.length-e-1);
+        A = temp;
+    }
+
+
     public static void main(String[] args) throws IOException{
         N = read();
         A = new int[N];
@@ -48,7 +58,7 @@ public class Main {
 
         int Q = 2;
         while(Q-->0){
-            remove(read(), read());
+            remove2(read(), read());
         }
         StringBuilder sb = new StringBuilder();
         sb.append(A.length).append("\n");
