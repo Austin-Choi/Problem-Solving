@@ -1,0 +1,62 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static StreamTokenizer sst = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
+
+    static int read() throws IOException{
+        sst.nextToken();
+        return (int) sst.nval;
+    }
+
+    static char rc() throws IOException{
+        sst.nextToken();
+        return (char) sst.sval.charAt(0);
+    }
+
+    static int N,M;
+    static int[] parent;
+    static int[] size;
+
+    static int find(int x){
+        if(parent[x] == x)
+            return x;
+        return parent[x] = find(parent[x]);
+    }
+
+    static void union(int a, int b){
+        int pa = find(a);
+        int pb = find(b);
+        if(pa == pb)
+            return;
+        if(size[pb] < size[pa]){
+            int t = pa;
+            pa = pb;
+            pb = t;
+        }
+        parent[pb] = pa;
+        size[pa] += size[pb];
+    }
+
+    public static void main(String[] args) throws IOException{
+        N = read();
+        M = read();
+        parent = new int[N+1];
+        size = new int[N+1];
+        for(int i = 1; i<=N; i++){
+            parent[i] = i;
+            size[i] = 1;
+        }
+        StringBuilder sb = new StringBuilder();
+        while(M-->0){
+            char type = rc();
+            if(type == 'x'){
+                union(read(), read());
+            }
+            else{
+                sb.append(size[find(read())]).append("\n");
+            }
+        }
+        System.out.print(sb);
+    }
+}
