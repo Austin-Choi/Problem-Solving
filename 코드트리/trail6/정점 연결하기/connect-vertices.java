@@ -19,7 +19,7 @@ public class Main {
         return parent[x] = find(parent[x]);
     }
 
-    static SortedSet<Integer> ss = new TreeSet<>();
+    //static Set<Integer> ss = new HashSet<>();
     static void union(int a, int b){
         int pa = find(a);
         int pb = find(b);
@@ -46,17 +46,15 @@ public class Main {
         while(M-->0){
             union(read(), read());
         }
-        for(int i = 1; i<=N; i++){
-            ss.add(find(i));
-        }
         StringBuilder sb = new StringBuilder();
-        Iterator it = ss.iterator();
-        int cnt = 0;
-        while(it.hasNext()){
-            if(cnt == 2)
+        int prev = find(1);
+        sb.append(prev).append(" ");
+        for(int i = 2; i<=N; i++){
+            int cur = find(i);
+            if(cur != prev){
+                sb.append(cur);
                 break;
-            sb.append(it.next()).append(" ");
-            cnt++;
+            }
         }
         System.out.print(sb);
     }
