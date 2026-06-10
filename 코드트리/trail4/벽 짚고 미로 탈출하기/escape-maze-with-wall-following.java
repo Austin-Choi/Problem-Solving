@@ -30,6 +30,8 @@ public class Main {
     
 
     // 같은곳 계속 도는거 처리 필요함
+    // -> 해결 : visited를 N*N*dir로 놓고 방문처리는 dfs 진입하자마자 현재 방문 처리됬는지 보고 
+    // 만약 처리되있으면 사이클임 -1 갱신하고 리턴
     static void move(int ci, int cj, int d, int len){
         if(v[ci][cj][d]){
             ans = -1;
@@ -51,7 +53,8 @@ public class Main {
             int right = (d+1)%4;
             int ri = ni + di[right];
             int rj = nj + dj[right];
-            
+            // ri, rj validation 안해도 되는게 오른쪽으로 돌면 그런 바깥으로 벗어나는 일이 없음
+            // 그 전에 이미 탈출되기 때문임.
             if(board[ri][rj] == 0){
                 move(ri, rj, right, len+2);
             }
