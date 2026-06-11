@@ -41,6 +41,8 @@ public class Main {
                         int nj = j + dj[d];
                         if(ni < 0 || nj < 0 || ni >= N || nj >= N)
                             continue;
+                        // 원인 : 문제에서 인접한 4개 값중 상하좌우로 찾았을때 최대값이어야함
+                        // max = 0, di,dj 상하좌우로
                         if(board[ni][nj] > max){
                             max = board[ni][nj];
                             mi = ni;
