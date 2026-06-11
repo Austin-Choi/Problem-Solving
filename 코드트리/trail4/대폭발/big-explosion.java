@@ -31,6 +31,7 @@ public class Main {
         board[si][sj] = 1;
 
         for(int ct = 1; ct<=M; ct++){
+            // lvl bfs 할때는 q.size 고정해야함
             int size = q.size();
             for(int n = 0; n<size; n++){
                 int[] cur = q.poll();
