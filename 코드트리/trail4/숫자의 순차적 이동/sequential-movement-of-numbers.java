@@ -23,7 +23,7 @@ public class Main {
 
     static int N, M;
     static int[][] board;
-    static Map<Integer, int[]> toMove;
+    static SortedMap<Integer, int[]> toMove;
     static int[] di = {-1,-1,0,1,1,1,0,-1};
     static int[] dj = {0,1,1,1,0,-1,-1,-1};
 
@@ -62,7 +62,7 @@ public class Main {
         M = read();
         board = new int[N][N];
         // [n][i,j]= 숫자 n의 좌표 위치 i,j 저장
-        toMove = new HashMap<>();
+        toMove = new TreeMap<>();
 
         for(int i = 0; i<N; i++){
             for(int j = 0; j<N; j++){
