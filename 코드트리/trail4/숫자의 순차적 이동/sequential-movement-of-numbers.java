@@ -2,14 +2,7 @@ import java.util.*;
 import java.io.*;
 
 /*
-15 13  1 11
- 4  8  3  5
- 2 12 16  7
-14  6  9 10
-
-15  1 13 11
- 4  8  3  5
- 2 12 16  7
+hashmap이나 treemap이나 집합은 유지돼서 굳이 1~N*N 키값을 sorting 할 필요는 없음
 */
 
 
@@ -51,7 +44,7 @@ public class Main {
             board[ci][cj] = board[mi][mj];
             board[mi][mj] = t;
 
-            // 원인 : 한번 스왑할때마다 바로 tomove에서 위치 스왑해줘야함.
+            // 원인 : 한번 스왑할때마다 바로 tomove에서 위치 스왑
             toMove.put(max, new int[]{ci,cj});
             toMove.put(t, new int[]{mi,mj});
         }
