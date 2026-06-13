@@ -10,7 +10,6 @@ pollLast + addFirst
 
 */
 
-
 public class Main {
     static StreamTokenizer sst = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
 
@@ -24,12 +23,15 @@ public class Main {
     static int N,M;
     // 숫자, i,j 좌표값 추적 (1~N*N 전부 추적)
     static Map<Integer, int[]> m = new HashMap<>();
+    static int[][] m2;
     static int[] di = {-1,-1,0,1,1,1,0,-1};
     static int[] dj = {0,1,1,1,0,-1,-1,-1};
 
     static void move(int cur){
-        int ci = m.get(cur)[0];
-        int cj = m.get(cur)[1];
+        // int ci = m.get(cur)[0];
+        // int cj = m.get(cur)[1];
+        int ci = m2[cur][0];
+        int cj = m2[cur][1];
 
         //8방향중 제일 큰 값 존재하는 ni,nj를 mi,mj로 선정
         int max = 0;
@@ -82,7 +84,8 @@ public class Main {
                 mBoard[mi][mj] = next;
             }
             board[mi][mj].addLast(next);
-            m.put(next, new int[]{mi,mj});
+            //m.put(next, new int[]{mi,mj});
+            m2[next] = new int[]{mi,mj};
         }
     }
 
@@ -91,6 +94,7 @@ public class Main {
         M = read();
         mBoard = new int[N][N];
         board = new Deque[N][N];
+        m2 = new int[N*N+1][2];
         for(int i= 0; i<N; i++){
             for(int j = 0; j<N; j++){
                 board[i][j] = new ArrayDeque<>();
@@ -102,7 +106,8 @@ public class Main {
                 int n = read();
                 mBoard[i][j] = n;
                 board[i][j].addLast(n);
-                m.put(n, new int[]{i,j});
+                //m.put(n, new int[]{i,j});
+                m2[n] = new int[]{i,j};
             }
         }
 
