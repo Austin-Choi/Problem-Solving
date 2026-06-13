@@ -13,6 +13,13 @@ PriorityQueue<int[]>[][] board;
 2 1 U 1
 2 2 D 3
 런타임에러
+
+런타임 에러 원인 : 북동남서로 해서 방향 반대해줘야하는데 북남동서로 입력함
+주기성 : cv % 2*(N-1)
+board는 임시로 우선순위 계산용으로 두는것 
+ball을 copy해서 이동다하고 board로 우선순위 계산해서 cBall에 새로 쓰고 
+ball = cBall
+
 */
 
 
@@ -71,7 +78,7 @@ public class Main {
                 cj = nj;
             }
 
-            // 런타임에러  ci, cj에 음수값 들어옴
+            // ci, cj에 음수값
             // ball 업데이트안해서->cBall추가로 사용
             copy[ci][cj].add(new int[]{cn, cv, cd});
         }
@@ -98,8 +105,6 @@ public class Main {
         M = read();
         T = read();
         K = read();
-        // [0]=번호,[1]=속도
-        //board = new PriorityQueue[N][N];
 
         ctoi['U'] = 0;
         ctoi['R'] = 1;
