@@ -19,7 +19,6 @@ PriorityQueue<int[]>[][] board;
 board는 임시로 우선순위 계산용으로 두는것 
 ball을 copy해서 이동다하고 board로 우선순위 계산해서 cBall에 새로 쓰고 
 ball = cBall
-
 */
 
 
@@ -85,6 +84,7 @@ public class Main {
 
         for(int i = 0; i<N; i++){
             for(int j = 0; j<N; j++){
+                // 이렇게 하려면 우선순위 문제랑 반대로 구현해야함
                 while(copy[i][j].size() > K){
                     copy[i][j].poll();
                 }
