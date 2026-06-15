@@ -7,6 +7,9 @@ MST 만들고 트리에서 특정 지점으로 가는 경로 유일하니까 dfs
   4-5
 1-4-3-6
 1-2  
+
+사실 dfs도 필요없이 union하고 나서 내림차순 정렬이니까 pa == pb일때 w가 정답임
+-> 그래프 만들 필요도 없음.
 */
 
 public class Main {
@@ -68,9 +71,8 @@ public class Main {
             parent[i] = i;
         }
 
-        while(M-->0){
+        while(M-->0)
             li.add(new int[]{read(), read(), read()});
-        }
         Collections.sort(li, Comparator.comparingInt(a->-a[2]));
 
         for(int[] v : li){
@@ -80,7 +82,7 @@ public class Main {
 
             union(s,e,w);
             if(find(A) == find(B)){
-                ans = Math.min(ans, w);
+                ans = w;
                 break;
             }
         }
