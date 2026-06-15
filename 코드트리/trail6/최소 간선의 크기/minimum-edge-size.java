@@ -33,8 +33,8 @@ public class Main {
         if(pa == pb)
             return;
         parent[pb] = pa;
-        g[a].add(new int[]{b,w});
-        g[b].add(new int[]{a,w});
+        //g[a].add(new int[]{b,w});
+        //g[b].add(new int[]{a,w});
     }
 
     static final int INF = 1000000001;
@@ -60,11 +60,11 @@ public class Main {
         M = read();
         A = read();
         B = read();
-        g = new ArrayList[N+1];
+        //g = new ArrayList[N+1];
         parent = new int[N+1];
 
         for(int i = 1; i<=N; i++){
-            g[i] = new ArrayList<>();
+            //g[i] = new ArrayList<>();
             parent[i] = i;
         }
 
