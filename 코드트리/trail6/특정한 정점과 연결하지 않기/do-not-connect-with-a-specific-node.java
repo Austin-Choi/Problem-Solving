@@ -66,27 +66,35 @@ public class Main {
         B = find(read());
         K = read();
 
+        // 루트노드마다 얼마나 연결되어있는지 갯수셈
         for(int i = 1; i<=N; i++){
             int cur = find(i);
             if(cur == B)
                 continue;
             cnt[cur]++;
         }
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(a->-a));
+
+        // 최대 힙을 쓰게되면 N log N
+        // 최소 힙을 쓰게되면 N log K
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for(int i= 1; i<=N; i++){
             // A가 루트노드인건 이미 연결되어있으므로 ans 초기값으로 설정
             // B가 루트노드인건 넣으면 안됨
             if(i == A || i == B || cnt[i] == 0)
                 continue;
-            pq.add(cnt[i]);
+            if(pq.size() < K)
+                pq.add(cnt[i]);
+            else if(K > 0 && cnt[i] > pq.peek()){
+                pq.poll();
+                pq.add(cnt[i]);
+            }
         }
 
         int ans = cnt[A];
         // K번 연결하랬으니 제일 많이 연결된 노드 순서로 K번 연결 시도
-        while(K-->0){
-            if(!pq.isEmpty()){
-                ans += pq.poll();
-            }
+        // -> pq 크기 k로 유지하기
+        while(!pq.isEmpty()){
+            ans += pq.poll();
         }
         System.out.print(ans);
     }
