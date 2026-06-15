@@ -76,7 +76,7 @@ public class Main {
         for(int i= 1; i<=N; i++){
             // A가 루트노드인건 이미 연결되어있으므로 ans 초기값으로 설정
             // B가 루트노드인건 넣으면 안됨
-            if(i == A || i == B)
+            if(i == A || i == B || cnt[i] == 0)
                 continue;
             pq.add(cnt[i]);
         }
