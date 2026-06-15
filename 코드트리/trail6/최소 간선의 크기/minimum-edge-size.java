@@ -22,6 +22,7 @@ public class Main {
 
     static int N,M,A,B;
     static int[] parent;
+    static int[] size;
     static ArrayList<int[]> li = new ArrayList<>();
     static ArrayList<int[]>[] g;
     static int find(int x){
@@ -35,7 +36,13 @@ public class Main {
         int pb = find(b);
         if(pa == pb)
             return;
+        if(size[pb] < size[pa]){
+            int t = pa;
+            pa = pb;
+            pb = t;
+        }
         parent[pb] = pa;
+        size[pa] += size[pb];
         //g[a].add(new int[]{b,w});
         //g[b].add(new int[]{a,w});
     }
@@ -65,10 +72,12 @@ public class Main {
         B = read();
         //g = new ArrayList[N+1];
         parent = new int[N+1];
+        size = new int[N+1];
 
         for(int i = 1; i<=N; i++){
             //g[i] = new ArrayList<>();
             parent[i] = i;
+            size[i] = 1;
         }
 
         while(M-->0)
