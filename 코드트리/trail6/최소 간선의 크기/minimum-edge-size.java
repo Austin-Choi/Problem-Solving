@@ -37,8 +37,8 @@ public class Main {
         g[b].add(new int[]{a,w});
     }
 
-    static int ans = 0;
     static final int INF = 1000000001;
+    static int ans = INF;
     static void dfs(int cur, int dest, int min, int p){
         if(cur == dest){
             ans = min;
@@ -62,7 +62,7 @@ public class Main {
         B = read();
         g = new ArrayList[N+1];
         parent = new int[N+1];
-        
+
         for(int i = 1; i<=N; i++){
             g[i] = new ArrayList<>();
             parent[i] = i;
@@ -79,11 +79,13 @@ public class Main {
             int w = v[2];
 
             union(s,e,w);
-            if(find(A) == find(B))
+            if(find(A) == find(B)){
+                ans = Math.min(ans, w);
                 break;
+            }
         }
 
-        dfs(A,B,INF,0);
+        //dfs(A,B,INF,0);
         System.out.print(ans);
     }
 }
