@@ -17,6 +17,7 @@ public class Main {
     static int[] parent;
     static boolean[] color;
     static int sum = 0;
+    static int cnt = 0;
 
     static int find(int x){
         if(parent[x] == x)
@@ -31,6 +32,7 @@ public class Main {
             return;
         parent[pb] = pa;
         sum += w;
+        cnt++;
     }
 
     public static void main(String[] args) throws IOException{
@@ -61,14 +63,7 @@ public class Main {
             int w = l[2];
             union(u,v,w);
         }
-        Set<Integer> s = new HashSet<>();
-        for(int i = 1; i<=N; i++){
-            s.add(find(i));
-            if(s.size() > 1){
-                System.out.print(-1);
-                return;
-            }
-        }
-        System.out.print(sum);
+
+        System.out.print(cnt == N-1 ? sum : -1);
     }
 }
