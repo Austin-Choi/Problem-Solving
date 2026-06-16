@@ -48,11 +48,8 @@ public class Main {
         for(int i = 1; i<=N; i++)
             g[i] = new ArrayList<>();
 
-        int root = -1;
         for(int i = 0; i<M; i++){
             int u = read();
-            if(i == 0)
-                root = u;
             int v = read();
             g[u].add(v);
             g[v].add(u);
