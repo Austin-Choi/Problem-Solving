@@ -58,6 +58,8 @@ public class Main {
         });
 
         for(int[] l : li){
+            if(cnt == N-1)
+                break;
             int u = l[0];
             int v = l[1];
             int w = l[2];
