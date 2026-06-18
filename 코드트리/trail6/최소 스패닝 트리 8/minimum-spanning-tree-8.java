@@ -37,9 +37,7 @@ public class Main {
             sum += cd;
 
             for(int[] n : g[ci]){
-                if(v[n[0]])
-                    continue;
-                pq.add(new int[]{n[0], n[1]});
+                pq.add(n);
             }
         }
 
@@ -61,6 +59,12 @@ public class Main {
             g[a].add(new int[]{b,w});
             g[b].add(new int[]{a,w});
         }
-        System.out.print(prim(1));
+
+        long ans = 0;
+        for(int i=1;i<=N;i++){
+            if(!v[i])
+                ans += prim(i);
+        }
+        System.out.print(ans);
     }
 }
