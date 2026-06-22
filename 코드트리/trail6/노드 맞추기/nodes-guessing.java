@@ -1,6 +1,15 @@
 import java.util.*;
 import java.io.*;
 
+/*
+진입차수가 0인게 시작이라 그게 갯수
+-> (x,y) y는 x의 조상
+
+indeg가 0이 되는 순간의 ci가 직계 부모
+
+stoi hashmap 사용
+*/
+
 public class Main {
     static StreamTokenizer sst = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
 
