@@ -63,11 +63,11 @@ public class Main {
                 }
             }
 
-            if(j == 0 || j == min)
-                continue;
+            // if(j == 0 || j == min)
+            //     continue;
 
-            g[a[j-1]-'a'].add(b[j]-'a');
-            indeg[b[j]-'a']++;
+            // g[a[j-1]-'a'].add(b[j]-'a');
+            // indeg[b[j]-'a']++;
         }
 
         ArrayList<Integer> ans = new ArrayList<>();
