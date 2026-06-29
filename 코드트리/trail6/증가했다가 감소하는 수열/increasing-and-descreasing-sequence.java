@@ -56,8 +56,8 @@ public class Main {
                         // 마지막 위치를 내림차순 끝에 추가하고
                         // 내림차순 시작과 연결 확인
                         if(card[i] < card[k] && card[j] < card[k]){
-                            //dp[k][j] = (dp[k][j] + dp[i][j]) % MOD;
-                            dp[i][k] = (dp[i][k] + dp[i][j]) % MOD;
+                            dp[k][j] = (dp[k][j] + dp[i][j]) % MOD;
+                            //dp[i][k] = (dp[i][k] + dp[i][j]) % MOD;
                         }
                         break;
                     }
@@ -74,10 +74,12 @@ public class Main {
 
         int ans = 0;
         /*
-        마지막 정점을 붙일때 같은 경로를 둘 다에게 붙임
+        마지막 정점을 붙일때 내림차순한테 붙였으면 i,N-1
+        오름차순한테 붙였으면 N-1, i
         */
         for(int i= 0; i<N-1; i++){
-            ans = (ans + dp[i][N-1]) % MOD;
+            //ans = (ans + dp[i][N-1]) % MOD;
+            ans = (ans + dp[N-1][i]) % MOD;
         }
         System.out.print(ans);
     }
