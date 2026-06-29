@@ -39,36 +39,45 @@ public class Main {
         // pos : 마지막에 본 인덱스, i : 왼쪽, j : 오른쪽
         // 어차피 마지막 고정이니까 N-1로
         // 왼쪽은 오름차순 오른쪽은 내림차순
-        int M = N-1;
-        int[][][] dp = new int[M][M][M];
-        dp[0][0][0] = 1;
-        for(int p = 0; p<M-1; p++){
-            for(int i = 0; i<M; i++){
-                for(int j = 0; j<M; j++){
-                    if(dp[p][i][j] == 0)
-                        continue;
-                    if(card[j] < card[p+1])
-                        dp[p+1][i][p+1] = (dp[p+1][i][p+1] + dp[p][i][j]) % MOD;
-                    if(card[i] < card[p+1])
-                        dp[p+1][p+1][j] = (dp[p+1][p+1][j]+ dp[p][i][j]) % MOD;
-                    dp[p+1][i][j] = (dp[p+1][i][j]+ dp[p][i][j]) % MOD; 
+
+        // -> pos는 필요없음 max(i,j)까지 확정됨.
+        // -> 경우의 수 세는거니까 초기화는 0
+        int[][] dp = new int[N][N];
+        dp[0][0] = 1;
+        for(int i= 0; i<N; i++){
+            for(int j = 0; j<N; j++){
+                if(dp[i][j] == 0)
+                    continue;
+                int next = Math.max(i,j)+1;
+                if(next == N)
+                    continue;
+                for(int k = next; k<N; k++){
+                    if(k == N-1){
+                        // 마지막 위치를 내림차순 끝에 추가하고
+                        // 내림차순 시작과 연결 확인
+                        if(card[i] < card[k] && card[j] < card[k]){
+                            //dp[k][j] = (dp[k][j] + dp[i][j]) % MOD;
+                            dp[i][k] = (dp[i][k] + dp[i][j]) % MOD;
+                        }
+                        break;
+                    }
+
+                    if(card[i] < card[k]){
+                        dp[k][j] = (dp[k][j] + dp[i][j]) % MOD;
+                    }
+                    if(card[j] < card[k]){
+                        dp[i][k] = (dp[i][k] + dp[i][j]) % MOD;
+                    }
                 }
             }
         }
 
         int ans = 0;
-        // 마지막 위치를 오름차순 끝에 추가하고
-        // 내림차순 시작과 연결 확인
+        /*
+        마지막 정점을 붙일때 같은 경로를 둘 다에게 붙임
+        */
         for(int i= 0; i<N-1; i++){
-            for(int j= 0; j<N-1; j++){
-                if(dp[N-2][i][j] == 0)
-                    continue;
-                if(card[i] < card[N-1]){
-                    if(card[j] < card[N-1]){
-                        ans = (ans + dp[N-2][i][j]) % MOD;
-                    }
-                }
-            }
+            ans = (ans + dp[i][N-1]) % MOD;
         }
         System.out.print(ans);
     }
