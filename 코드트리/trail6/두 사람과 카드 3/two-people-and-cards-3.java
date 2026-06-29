@@ -33,36 +33,51 @@ public class Main {
         for(int i = 1; i<=N; i++)
             card[i] = read();
         
-        long[][][][] dp = new long[N+1][N+1][N+1][M+1];
-        for(int i= 0; i<=N; i++){
-            for(int j = 0; j<=N; j++){
-                for(int k = 0; k<=N; k++)
-                    Arrays.fill(dp[i][j][k], INF);
-            }
-        }
+        // 롤링 배열 기법
+        long[][][][] dp = new long[2][N+1][N+1][M+1];
+        for (int t = 0; t < 2; t++)
+            for (int i = 0; i <= N; i++)
+                for (int j = 0; j <= N; j++)
+                    Arrays.fill(dp[t][i][j], INF);
         dp[0][0][0][0] = 0;
 
-        for(int p = 0; p<N; p++){
-            for(int i = 0; i<=p; i++){
-                for(int j = 0; j<=p; j++){
-                    for(int m = 0; m<=M; m++){
-                        if(dp[p][i][j][m] == INF)
+        for (int p = 0; p < N; p++) {
+            int cur = p & 1;
+            int nxt = cur ^ 1;
+
+            // 다음 층 초기화
+            for (int i = 0; i <= N; i++) {
+                for (int j = 0; j <= N; j++) {
+                    Arrays.fill(dp[nxt][i][j], INF);
+                }
+            }
+
+            int cardIdx = p + 1;
+
+            for (int i = 0; i <= p; i++) {
+                for (int j = 0; j <= p; j++) {
+                    for (int m = 0; m <= M; m++) {
+                        if (dp[cur][i][j][m] == INF)
                             continue;
-                        int nxt = p+1;
-                        dp[nxt][i][nxt][m] = Math.min(dp[nxt][i][nxt][m], dp[p][i][j][m] + getDiff(j,nxt));
-                        dp[nxt][nxt][j][m] = Math.min(dp[nxt][nxt][j][m], dp[p][i][j][m] + getDiff(i,nxt));
-                        if(m < M)
-                            dp[nxt][i][j][m+1] = Math.min(dp[nxt][i][j][m+1], dp[p][i][j][m]);
+                        long now = dp[cur][i][j][m];
+                        // B가 가져감
+                        dp[nxt][i][cardIdx][m] = Math.min(dp[nxt][i][cardIdx][m], now + getDiff(j, cardIdx));
+                        // A가 가져감
+                        dp[nxt][cardIdx][j][m] = Math.min(dp[nxt][cardIdx][j][m], now + getDiff(i, cardIdx));
+                        // 버림
+                        if (m < M) 
+                            dp[nxt][i][j][m+1] = Math.min(dp[nxt][i][j][m+1], now);
                     }
                 }
             }
         }
 
+        int last = N & 1;
         long ans = INF;
         for (int i = 0; i <= N; i++) {
             for (int j = 0; j <= N; j++) {
                 for (int m = 0; m <= M; m++) {
-                    ans = Math.min(ans, dp[N][i][j][m]);
+                    ans = Math.min(ans, dp[last][i][j][m]);
                 }
             }
         }
