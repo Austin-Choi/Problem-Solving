@@ -20,7 +20,7 @@ public class Main {
                 int j = i+len-1;
                 if(s[i] == s[j]){
                     if(len == 2)
-                        dp[i][j] = Math.max(dp[i][j], 2);
+                        dp[i][j] = 2;
                     else
                         dp[i][j] = Math.max(dp[i][j], dp[i+1][j-1]+2);
                 }
