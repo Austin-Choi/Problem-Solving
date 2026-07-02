@@ -25,22 +25,6 @@ public class Main {
     static int[] temp;
     static final int INF = Integer.MAX_VALUE;
 
-    static void press(int i, int j){
-        int mask = 1<<j;
-        int cur = mask;
-        // 먼저 가로 3개 바꿔줌 j-1, j, j+1
-        if(j > 0)
-            cur |= (1<<(j-1));
-        if(j < M-1)
-            cur |= (1<<(j+1));
-        temp[i] ^= cur;
-        // 위아래 바꿔줌 i-1, i+1
-        if(i > 0)
-            temp[i-1] ^= mask;
-        if(i < N-1)
-            temp[i+1] ^= mask;
-    }
-
     public static void main(String[] args) throws IOException{
         N = read();
         M = read();
@@ -64,24 +48,35 @@ public class Main {
             // 마스크는 누른 상태를 나타내는거니까
             // c가 마스크에 존재하면 해당 버튼을 누른거임
             // 그러면 cnt++
-            for(int c = 0; c<M; c++){
-                if(((m >> c) & 1) != 0){
-                    press(0, c);
-                    cnt++;
+            // -> cnt는 Integer.bitCount로 대체가능
+
+            // j 순회 업는 버전
+            int cur = m;
+            // & ((1<<m)-1)로 j 경계 자동으로 잘려나감
+            // 해결 : | | 로 하던거 xor로 연결, 인접해서 눌리면 중간 비트가 두번 xor됨
+            // parity 고려해서 xor로
+            int flip = ((cur<<1) ^ cur ^ cur>>1) & ((1<<M)-1);
+            temp[0] ^= flip;
+            if(N>1)
+                temp[1] ^= cur;
+            cnt += Integer.bitCount(cur);
+
+            for(int i =1 ; i<N; i++){
+                // 위 행에서 0인 위치를 1로 바꿔야하니까 
+                // not으로 0/1 뒤집으면 1이 눌러야 할 위치가 되고 mask로 M개 비트만 유지
+                int mask = ~(temp[i-1]) & ((1<<M)-1);
+
+                if(mask != 0){
+                    int flip2 = ((mask << 1) ^ mask ^ (mask >> 1)) & ((1<<M)-1);
+                    temp[i] ^= flip2;
+                    temp[i-1] ^= mask;
+                    if(i < N-1)
+                        temp[i+1] ^= mask;
+                    cnt += Integer.bitCount(mask);
                 }
             }
 
-            // 지금 여기서 누르면 
-            for(int i = 1; i<N; i++){
-                for(int j = 0; j<M; j++){
-                    if(((temp[i-1] >> j) & 1) == 0){
-                        press(i,j);
-                        cnt++;
-                    }
-                }
-            }
-
-            if(temp[N-1] == (1<<M)-1)
+            if(temp[N-1] == ((1<<M)-1))
                 ans = Math.min(ans, cnt);
         }
 
