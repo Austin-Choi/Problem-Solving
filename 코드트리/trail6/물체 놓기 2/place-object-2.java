@@ -68,16 +68,16 @@ public class Main {
             }
         }
 
-        // 플로이드 전처리 필요
-        for(int k = 0; k<N; k++){
-            for(int i = 0; i<N; i++){
-                for(int j = 0; j<N; j++){
-                    if(cost[i][k] != 0 && cost[k][j] != 0){
-                        cost[i][j] = Math.min(cost[i][j], cost[i][k] + cost[k][j]);
-                    }
-                }
-            }
-        }
+        // 근데 플로이드를 하면 중간 정점이 압축되어버려서 중간정점이 mask에서 빠지는데 이게 왜??
+        // for(int k = 0; k<N; k++){
+        //     for(int i = 0; i<N; i++){
+        //         for(int j = 0; j<N; j++){
+        //             if(cost[i][k] != 0 && cost[k][j] != 0){
+        //                 cost[i][j] = Math.min(cost[i][j], cost[i][k] + cost[k][j]);
+        //             }
+        //         }
+        //     }
+        // }
 
         tsp();
         int ans = INF;
