@@ -69,15 +69,18 @@ public class Main {
         }
 
         // 근데 플로이드를 하면 중간 정점이 압축되어버려서 중간정점이 mask에서 빠지는데 이게 왜??
-        // for(int k = 0; k<N; k++){
-        //     for(int i = 0; i<N; i++){
-        //         for(int j = 0; j<N; j++){
-        //             if(cost[i][k] != 0 && cost[k][j] != 0){
-        //                 cost[i][j] = Math.min(cost[i][j], cost[i][k] + cost[k][j]);
-        //             }
-        //         }
-        //     }
-        // }
+        // -> 사실 문제 조건상 K개 이상이기 때문에 오히려 이득임
+        // 공식 답변에 따르면
+        // 경유지 k는 실제 모델에서 경로 비용을 이미 지불하면서 공짜로 놓이는 추가 물체임
+        for(int k = 0; k<N; k++){
+            for(int i = 0; i<N; i++){
+                for(int j = 0; j<N; j++){
+                    if(cost[i][k] != 0 && cost[k][j] != 0){
+                        cost[i][j] = Math.min(cost[i][j], cost[i][k] + cost[k][j]);
+                    }
+                }
+            }
+        }
 
         tsp();
         int ans = INF;
