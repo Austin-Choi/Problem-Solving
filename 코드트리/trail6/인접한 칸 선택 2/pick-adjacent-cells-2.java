@@ -7,6 +7,8 @@ import java.io.*;
 여러개 선택한건 거기서 확장해서 구하고
 3) 진행은 위에서 아래로 
 
+m관련 옵션은 m for문에
+getsum 중복 많으니까 전처리
 */
 
 public class Main {
@@ -41,22 +43,30 @@ public class Main {
             }
         }
 
+        int[][] cost = new int[M][1<<N];
+        for(int i = 0; i<M; i++){
+            for(int m = 0; m< (1<<N); m++){
+                cost[i][m] = getSum(i, m);
+            }
+        }
+
         int[][] dp = new int[M][1<<N];
         for(int m = 0; m<(1<<N); m++){
             if((m & (m<<1)) != 0)
                 continue;
-            dp[0][m] = getSum(0, m);
+            dp[0][m] = cost[0][m];
         }
 
         int ans = 0;
         for(int i = 1; i<M; i++){
             for(int m = 0; m<(1<<N); m++){
+                if((m & (m<<1))!= 0)
+                    continue;
+
                 for(int prev = 0; prev<(1<<N); prev++){
                     if((m & prev) != 0)
                         continue;
-                    if((m & (m<<1))!= 0)
-                        continue;
-                    dp[i][m] = Math.max(dp[i][m], dp[i-1][prev] + getSum(i,m));
+                    dp[i][m] = Math.max(dp[i][m], dp[i-1][prev] + cost[i][m]);
                     if(i == M-1){
                         ans = Math.max(ans, dp[i][m]);
                     }
