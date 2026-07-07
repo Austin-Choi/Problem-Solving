@@ -33,15 +33,17 @@ public class Main {
         dp[1<<0][0][0] = true;
 
         int ans = 0;
+        // 순회 돌 때 많이 걸러지는걸 최상단에 배치해야 함
+        // dp m last lc 가 false일때
         for(int m = 0; m<(1<<N); m++){
             for(int last = 0; last<N; last++){
                 if((m & (1<<last)) == 0)
                     continue;
-                for(int next = 0; next < N; next++){
-                    if((m & (1<<next)) != 0)
+                for(int lc = 0; lc<=20; lc++){
+                    if(!dp[m][last][lc])
                         continue;
-                    for(int lc = 0; lc<=20; lc++){
-                        if(!dp[m][last][lc])
+                    for(int next = 0; next < N; next++){
+                        if((m & (1<<next)) != 0)
                             continue;
                         if(cost[last][next] == 0)
                             continue;
@@ -50,7 +52,7 @@ public class Main {
                         int nm = m | (1<<next);
                         dp[nm][next][cost[last][next]] = true;
                         ans = Math.max(ans, Integer.bitCount(nm));
-                    }
+                }
                 }
             }
         }
