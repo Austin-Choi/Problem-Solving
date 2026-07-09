@@ -106,14 +106,14 @@ public class Main {
             for(int[] n : g[ci]){
                 int ni = n[0];
                 int nw = n[1];
-                if((distSE[ni] == distSE[ci] + nw))
-                    // && (distSE[ci] + nw + distES[ni] == D)){
+                if((distSE[ni] == distSE[ci] + nw) 
+                    && (distSE[ci] + nw + distES[ni] == D))
                     cntS[ni] += cntS[ci];
-                //}
             }
         }
 
         // distSE[ni] + nw + distES[ci] == total -> 최단경로 dag 소속인지 추가확인
+        // -> 없어도 돌기는 한데 있으면 빠름
         // e->s니까 위상순서 반대로 쓰고 dp갱신할때 
         Collections.sort(ss, Comparator.comparingInt(i -> -distSE[i]));
         for(int ci : ss){
@@ -123,10 +123,9 @@ public class Main {
             for(int[] n : g[ci]){
                 int ni = n[0];
                 int nw = n[1];
-                if((distSE[ci] == distSE[ni] + nw))
-                    //&& (distSE[ni] + nw + distES[ci] == D)){ 
-                    cntE[ni] += cntE[ci];
-                //}
+                if((distSE[ci] == distSE[ni] + nw)
+                    && (distSE[ni] + nw + distES[ci] == D))
+                    cntE[ni] += cntE[ci];  
             }
         }
 
