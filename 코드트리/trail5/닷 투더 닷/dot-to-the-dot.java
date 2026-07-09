@@ -72,10 +72,9 @@ public class Main {
             g[u].add(new int[]{v,l,c});
             g[v].add(new int[]{u,l,c});
         }
-        ArrayList<Integer> li = new ArrayList<>(ss);
-        Collections.sort(li, Collections.reverseOrder());
+
         int ans = INF;
-        for(int cc : li){
+        for(int cc : ss){
             ans = Math.min(ans, dijkstra(cc));
         }
         System.out.print(ans);
