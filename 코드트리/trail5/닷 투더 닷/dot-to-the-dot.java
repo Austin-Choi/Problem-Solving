@@ -33,6 +33,8 @@ public class Main {
             
             if(dist[ci] != cd)
                 continue;
+            if(ci == N)
+                break;
             
             for(int[] n : g[ci]){
                 int ni = n[0];
@@ -70,9 +72,10 @@ public class Main {
             g[u].add(new int[]{v,l,c});
             g[v].add(new int[]{u,l,c});
         }
-        
+        ArrayList<Integer> li = new ArrayList<>(ss);
+        Collections.sort(li, Collections.reverseOrder());
         int ans = INF;
-        for(int cc : ss){
+        for(int cc : li){
             ans = Math.min(ans, dijkstra(cc));
         }
         System.out.print(ans);
