@@ -71,7 +71,7 @@ public class Main {
         int[] distSE = dijkstra(1);
         int[] distES = dijkstra(N);
 
-        // 최단경로 total = D
+        // N에 도달할 수 없으면 최단경로도 없음
         int D = distSE[N];
         if(D == INF){
             System.out.println(0);
@@ -129,6 +129,7 @@ public class Main {
             }
         }
 
+        // 최단경로 총 갯수 = s->i로 가는거 갯수 * i->N으로 가는거 갯수
         long total = cntS[N];
         if(total == 0){
             System.out.println(0);
