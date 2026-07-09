@@ -9,6 +9,7 @@ import java.io.*;
 -> total = cntS[N];
 
 cntS[ni] * cntE[ci] == total
+이건 양쪽 도착 정보가 모두 필요해서 distS, distE 구함
 */
 
 public class Main {
@@ -70,6 +71,7 @@ public class Main {
         int[] distSE = dijkstra(1);
         int[] distES = dijkstra(N);
 
+        // 최단경로 total = D
         int D = distSE[N];
         if(D == INF){
             System.out.println(0);
@@ -86,12 +88,15 @@ public class Main {
             }
         }
 
+        // 시작점에서 i까지 오는 최단경로 갯수
         long[] cntS = new long[N+1];
+        // i에서 끝점까지 오는 최단경로 갯수
         long[] cntE = new long[N+1];
         cntS[1] = 1;
         cntE[N] = 1;
 
-        // cntS: 오름차순 distSE
+        // distSE는 최단경로 DAG의 위상순서를 만들기 위해서 사용됨
+        // s->e니까 그대로 씀
         List<Integer> ss = new ArrayList<>(nodes);
         Collections.sort(ss, Comparator.comparingInt(i -> distSE[i]));
         for(int ci : ss){
@@ -101,14 +106,15 @@ public class Main {
             for(int[] n : g[ci]){
                 int ni = n[0];
                 int nw = n[1];
-                if((distSE[ni] == distSE[ci] + nw) && (distSE[ci] + nw + distES[ni] == D)){
+                if((distSE[ni] == distSE[ci] + nw))
+                    // && (distSE[ci] + nw + distES[ni] == D)){
                     cntS[ni] += cntS[ci];
-                }
+                //}
             }
         }
 
-        // 여기서 계속 뭔가 틀림!!!
-        // cntE: 역방향이라 내림차순으로 해야함
+        // distSE[ni] + nw + distES[ci] == total -> 최단경로 dag 소속인지 추가확인
+        // e->s니까 위상순서 반대로 쓰고 dp갱신할때 
         Collections.sort(ss, Comparator.comparingInt(i -> -distSE[i]));
         for(int ci : ss){
             if(cntE[ci] == 0) 
@@ -117,9 +123,10 @@ public class Main {
             for(int[] n : g[ci]){
                 int ni = n[0];
                 int nw = n[1];
-                if((distSE[ci] == distSE[ni] + nw) && (distSE[ni] + nw + distES[ci] == D)){ 
+                if((distSE[ci] == distSE[ni] + nw))
+                    //&& (distSE[ni] + nw + distES[ci] == D)){ 
                     cntE[ni] += cntE[ci];
-                }
+                //}
             }
         }
 
