@@ -1,7 +1,10 @@
 import java.util.*;
 import java.io.*;
 
-
+/*
+A->B로 dist 만들면 최단경로 DAG 만들어서 DFS 해야함
+B->A로 dist 만들면 dist 만으로 경로복원 가능
+*/
 
 public class Main {
     static StreamTokenizer sst = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
@@ -19,28 +22,28 @@ public class Main {
     // 반환형을 boolean으로 해야 더이상 안보고 가지치기함
     static ArrayList<Integer> path = new ArrayList<>();
 
-    static boolean dfs(int cur){
-        path.add(cur);
+    // static boolean dfs(int cur){
+    //     path.add(cur);
 
-        if(cur == B)
-            return true;
+    //     if(cur == B)
+    //         return true;
         
-        for(int[] n : sg[cur]){
-            int ni = n[0];
-            if(dfs(ni))
-                return true;
-        }
+    //     for(int[] n : sg[cur]){
+    //         int ni = n[0];
+    //         if(dfs(ni))
+    //             return true;
+    //     }
 
-        path.remove(path.size()-1);
-        return false;
-    }
+    //     path.remove(path.size()-1);
+    //     return false;
+    // }
 
     static long[] dijkstra(){
         PriorityQueue<long[]> q = new PriorityQueue<>(Comparator.comparingLong(a->a[1]));
-        q.add(new long[]{A, 0});
+        q.add(new long[]{B, 0});
         long[] dist = new long[N+1];
         Arrays.fill(dist, INF);
-        dist[A] = 0;
+        dist[B] = 0;
 
         while(!q.isEmpty()){
             long[] cur = q.poll();
@@ -84,30 +87,30 @@ public class Main {
         long[] dist = dijkstra();
         // 최단경로가 여러가지가 가능하니까 여기서 dist를 가지고 
         // 최단경로 DAG를 만들어야 함
-        sg = new ArrayList[N+1];
-        for(int i = 1; i<=N; i++)
-            sg[i] = new ArrayList<>();
+        // -> dist만으로 해도 되는데 사전순으로 하려면 g를 사전순 정렬해야 함
+        for(int i = 1; i<=N; i++){
+            Collections.sort(g[i], Comparator.comparingInt(a->a[0]));
+        }
 
-        for(int i =1; i<=N; i++){
-            for(int[] n : g[i]){
+        int cur = A;
+        path.add(A);
+
+        while(cur != B){
+            for(int[] n : g[cur]){
                 int ni = n[0];
                 int nd = n[1];
-                if(dist[i] + nd == dist[ni]){
-                    sg[i].add(new int[]{ni, nd});
+                if(dist[ni] + nd == dist[cur]){
+                    path.add(ni);
+                    cur = ni;
+                    break;
                 }
             }
         }
-
-        for(int i = 1; i<N; i++)
-            Collections.sort(sg[i], (a,b) -> {
-                return a[0] - b[0];
-            });
         
-        dfs(A);
         StringBuilder sb = new StringBuilder();
-        sb.append(dist[B]).append("\n");
-        for(int a : path)
-            sb.append(a).append(" ");
+        sb.append(dist[A]).append("\n");
+        for(int p : path)
+            sb.append(p).append(" ");
         System.out.print(sb);
     }
 }
