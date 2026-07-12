@@ -92,19 +92,20 @@ public class Main {
             }
         }
 
-        long[] distSE = dijkstra(1,false);
+        //long[] distSE = dijkstra(1,false);
         long[] distES = dijkstra(N,false);
-        if(distSE[N] == INF){
+        if(distES[1] == INF){
             System.out.print(-1);
             return;
         }
 
+        // distES니까 1->N으로 가야함
         int cur = 1;
         while(cur != N){
             for(int[] n : g[cur]){
                 int ni = n[0];
                 int nd = n[1];
-                if(distSE[cur] + nd + distES[ni] == distSE[N]){
+                if(distES[cur] == nd + distES[ni]){
                     map.put(itol(cur, ni), nd);
                     map.put(itol(ni, cur), nd);
                     cur = ni;
