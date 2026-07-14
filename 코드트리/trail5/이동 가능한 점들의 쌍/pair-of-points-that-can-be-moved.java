@@ -72,7 +72,7 @@ public class Main {
         }
 
         // Floyd를 여러 번 반복하여 상태가 충분히 전파되도록 함
-        for (int iter = 0; iter < 3; iter++) {
+        for (int iter = 0; iter < 2; iter++) {
             for (int k = 1; k <= N; k++) {
                 for (int i = 1; i <= N; i++) {
                     for (int j = 1; j <= N; j++) {
