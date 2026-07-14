@@ -23,7 +23,16 @@ mp[i][j][2] = i->j 로 가는 최단경로인데 빨간점 포함 여부(0,1)
 A->red->B 가 가능한 경로가 있다는거고 거기에 대해서 최솟값을 구하면
 A에서 시작해서 B로 끝나는데 red를 1개 이상 지나가는 최소 경로가 있다는거임
 그래서 min값이 INF가 아니면(갱신 성공하면) cnt++ sum+=
+
+==========
+layered DP + 다익스트라
+-> 쿼리수가 많아서 tle남 
++ 플로이드 
+-> 될듯?
 */
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
     static StreamTokenizer sst = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
@@ -34,8 +43,8 @@ public class Main {
     }
 
     static int N, M, P, Q;
-    static long[][] dist;
     static final long INF = 10_000L * 1_000_000 + 1;
+    static long[][] dist;
 
     public static void main(String[] args) throws IOException {
         N = read();
@@ -43,23 +52,45 @@ public class Main {
         P = read();
         Q = read();
 
-        dist = new long[N + 1][N + 1];
-        for (int i = 1; i <= N; i++) {
+        // 1~N: layer0, N+1~2N: layer1
+        int NN = 2 * N;                    
+        dist = new long[NN + 1][NN + 1];
+        for (int i = 1; i <= NN; i++) {
             Arrays.fill(dist[i], INF);
             dist[i][i] = 0;
         }
 
-        while (M-- > 0) {
+        while (M-->0) {
             int u = read();
             int v = read();
             int w = read();
-            if (w < dist[u][v]) 
-                dist[u][v] = w;
+
+            int u0 = u;
+            int u1 = u + N;
+            int v0 = v;
+            int v1 = v + N;
+
+            if (u <= P) 
+                dist[u0][v1] = Math.min(dist[u0][v1], w);
+            else {
+                if (v <= P) 
+                    dist[u0][v1] = Math.min(dist[u0][v1], w);
+                else
+                    dist[u0][v0] = Math.min(dist[u0][v0], w);
+            }
+
+            dist[u1][v1] = Math.min(dist[u1][v1], w);
         }
 
-        for (int k = 1; k <= N; k++) {
-            for (int i = 1; i <= N; i++) {
-                for (int j = 1; j <= N; j++) {
+        // 빨간 점 자기 자신 layer 전환
+        for (int i = 1; i <= P; i++) {
+            dist[i][i + N] = Math.min(dist[i][i + N], 0);
+        }
+
+        // Floyd-Warshall (Layered)
+        for (int k = 1; k <= NN; k++) {
+            for (int i = 1; i <= NN; i++) {
+                for (int j = 1; j <= NN; j++) {
                     if (dist[i][k] != INF && dist[k][j] != INF) {
                         dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
                     }
@@ -69,21 +100,18 @@ public class Main {
 
         int cnt = 0;
         long sum = 0;
-        // 쿼리에서 빨간점 피봇으로 삼아서 최단경로 새로 구해주기
-        // 여기서 INF면 도달불가니까 cnt x
-        while (Q-- > 0) {
+
+        while (Q-->0) {
             int a = read();
             int b = read();
-            
-            long minCost = INF;
-            for (int r = 1; r <= P; r++) {
-                if (dist[a][r] != INF && dist[r][b] != INF) 
-                    minCost = Math.min(minCost, dist[a][r] + dist[r][b]);  
-            }
-            
-            if (minCost != INF) {
+
+            long cost = dist[a][b + N];
+            if (a <= P) 
+                cost = Math.min(cost, dist[a + N][b + N]);
+
+            if (cost != INF) {
                 cnt++;
-                sum += minCost;
+                sum += cost;
             }
         }
         System.out.println(cnt);
