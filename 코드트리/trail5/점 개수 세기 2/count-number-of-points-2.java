@@ -80,18 +80,17 @@ public class Main {
         ArrayList<Integer> yl = new ArrayList<>(ty);
 
         // 중복제거해서 N+1크기가 아니라 tx,ty 기준으로 잡기
-        int[][] cnt = new int[tx.size()+1][ty.size()+1];
+        // 2차원 ps
+        int[][] ps = new int[tx.size()+1][ty.size()+1];
         for(int i = 0; i<N; i++){
             int cx = mx.get(arr[i][0]);
             int cy = my.get(arr[i][1]);
-            cnt[cx][cy]++;
+            ps[cx][cy]++;
         }
-
-        // 2차원 ps
-        int[][] ps = new int[tx.size()+1][ty.size()+1];
+        
         for(int i =1; i<=tx.size(); i++){
             for(int j = 1; j<=ty.size(); j++){
-                ps[i][j] = ps[i-1][j] + ps[i][j-1] - ps[i-1][j-1] + cnt[i][j];
+                ps[i][j] = ps[i-1][j] + ps[i][j-1] - ps[i-1][j-1] + ps[i][j];
             }
         }
 
