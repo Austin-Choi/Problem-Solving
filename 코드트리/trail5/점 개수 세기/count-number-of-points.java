@@ -20,7 +20,7 @@ public class Main {
     static int lb(int p, ArrayList<Integer> li){
         Integer x = sx.ceiling(p);
         if(x == null)
-            return li.size()+1;
+            return li.size();
         return m.get(x);
     }
 
@@ -28,7 +28,7 @@ public class Main {
     static int ub(int p, ArrayList<Integer> li){
         Integer x = sx.floor(p);
         if(x == null)
-            return 0;
+            return -1;
         return m.get(x);
     }
 
@@ -42,7 +42,7 @@ public class Main {
             sx.add(cur);
         }
         m = new HashMap<>();
-        int idx = 1;
+        int idx = 0;
         for(int xx : sx){
             m.put(xx, idx++);
         }
