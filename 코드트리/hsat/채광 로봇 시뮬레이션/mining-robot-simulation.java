@@ -27,82 +27,140 @@ public class Main {
         return (int) st.nval;
     }
 
-    static final int INF = -1000000001; 
-
     static int N, T;
-    static int[][] A;
-    // mx[i][j] = i,j에서 T초 되돌아갔을때 최대 이익 
-    static int[][] mx;
-    // dp[i][j][t] : t=0(미사용), t=1(사용)
-    static int[][][] dp;   
+    static int[][] board;
+    static long[][] suffix;
+    static int maxMask;
+    static final long INF = Long.MIN_VALUE / 2;
 
-    // (i,j)에서 정확히 T번 이동했을 때 최대 이익 계산
-    static void dfs(int i, int j, int x, int y, int time, int profit) {
-        if (time == T) {
-            mx[i][j] = Math.max(mx[i][j], profit);
-            return;
-        }
-        if (x + 1 <= N) 
-            dfs(i, j, x + 1, y, time + 1, profit + A[x + 1][y]);
-        
-        if (y + 1 <= N) 
-            dfs(i, j, x, y + 1, time + 1, profit + A[x][y + 1]);
-        
-    }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         N = read();
         T = read();
+        maxMask = 1<<T;
 
-        A = new int[N + 1][N + 1];
-        mx = new int[N + 1][N + 1];
-        dp = new int[N + 1][N + 1][2];
-
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                A[i][j] = read();
+        board = new int[N+1][N+1];
+        for(int i = 1; i<=N; i++){
+            for(int j =1 ; j<=N; j++){
+                board[i][j] = read();
             }
         }
 
-        for (int i = 1; i <= N; i++) {
-            Arrays.fill(mx[i], INF);
-        }
-
-        // 각 위치에서 T번 이동했을 때 최대 이익 미리 계산
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                dfs(i, j, i, j, 0, A[i][j]);
+        // suffix[i][j] = i,j 에서 N,N까지 최대 경로 합
+        suffix = new long[N+1][N+1];
+        for(int i = N; i>=1; i--){
+            for(int j = N; j>=1; j--){
+                if(i == N && j == N)
+                    suffix[i][j] = board[i][j];
+                else if(i ==N)
+                    suffix[i][j] = board[i][j] + suffix[i][j+1];
+                else if(j == N)
+                    suffix[i][j] = board[i][j] + suffix[i+1][j];
+                else
+                    suffix[i][j] = board[i][j] + Math.max(suffix[i][j+1], suffix[i+1][j]);
             }
         }
 
-        // dp 초기화
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                Arrays.fill(dp[i][j], INF);
-            }
+        // 대각선 방향 rolling dp
+        long[][] dpPrev = new long[N+1][maxMask];
+        long[][] dpCur = new long[N+1][maxMask];
+
+        for(int i = 1; i<=N; i++){
+            Arrays.fill(dpPrev[i], INF);
         }
-        dp[1][1][0] = A[1][1];
+        dpPrev[1][0] = board[1][1];
 
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                // 현재 위치에서 장치 사용
-                dp[i][j][1] = Math.max(dp[i][j][1], dp[i][j][0] + mx[i][j]);
+        long ans = INF;
+        int maxS = 2 * (N-1);
 
-                // 아래로 이동
-                if (i + 1 <= N) {
-                    dp[i + 1][j][0] = Math.max(dp[i + 1][j][0], dp[i][j][0] + A[i + 1][j]);
-                    dp[i + 1][j][1] = Math.max(dp[i + 1][j][1], dp[i][j][1] + A[i + 1][j]);
+        // s= 맨해튼 거리, 아래 오른쪽으로 움직이므로
+        for(int s = 0; s<maxS; s++){
+            //dpCur 초기화
+            for(int i =1 ;i<=N; i++){
+                Arrays.fill(dpCur[i], INF);
+            }
+
+            int minI = Math.max(1, s+2-N);
+            int maxI = Math.min(N, s+1);
+
+            for(int i = minI; i<=maxI; i++){
+                // 대각선 정보로 j 유추가능
+                int j = s+2 - i;
+                if(j < 1 || j > N)
+                    continue;
+                for(int m = 0; m<maxMask; m++){
+                    if(dpPrev[i][m] == INF)
+                        continue;
+                    //오른쪽으로 가기
+                    if(j < N){
+                        int ni = i;
+                        int nj = j+1;
+                        // 새 움직임 기록 위해서 왼쪽으로 밀고
+                        // 길이 제한
+                        int nm = ((m<<1) | 0) & (maxMask -1);
+                        long ns = dpPrev[i][m] + board[ni][nj];
+                        dpCur[ni][nm] = Math.max(dpCur[ni][nm], ns);
+                    }
+
+                    //아래로 가기
+                    if(i < N){
+                        int ni = i+1;
+                        int nj = j;
+                        int nm = ((m<<1) | 1) & (maxMask -1);
+                        long ns = dpPrev[i][m] + board[ni][nj];
+                        dpCur[ni][nm] = Math.max(dpCur[ni][nm], ns);
+                    }
                 }
+            }
 
-                // 오른쪽으로 이동
-                if (j + 1 <= N) {
-                    dp[i][j + 1][0] = Math.max(dp[i][j + 1][0], dp[i][j][0] + A[i][j + 1]);
-                    dp[i][j + 1][1] = Math.max(dp[i][j + 1][1], dp[i][j][1] + A[i][j + 1]);
+            int nextS = s+1;
+            // T초 이상부터 장치 사용 가능
+            if(nextS >= T){
+                int nMinI = Math.max(1, nextS + 2 - N);
+                int nMaxI = Math.min(N, nextS + 1);
+                for(int i = nMinI; i<= nMaxI; i++){
+                    int j = nextS + 2 - i;
+                    if(j < 1 || j > N)
+                        continue;
+                    for(int m = 0; m< maxMask; m++){
+                        if(dpCur[i][m] == INF)
+                            continue;
+                        // mask로 최근 T개 도착 셀 합 복원
+                        long bonus = 0;
+                        int ci = i;
+                        int cj = j;
+                        int cm = m;
+                        for(int k = 0; k<T; k++){
+                            // 가장 최근 이동을 알아내기 위해 &1로 최하위 비트 뽑아냄
+                            int recent = cm & 1;
+                            if(recent == 0)
+                                cj--;
+                            else
+                                ci--;
+                            cm >>= 1;
+                        }
+
+                        long used = dpCur[i][m] + suffix[ci][cj];
+                        if(ans < used)
+                            ans = used;
+                    }
                 }
             }
+
+            // 그냥 dpPrev = dpCur 하면 
+            // 같은 배열 가리키게 돼서 이전 층 데이터가 날아감
+            long[][] t = dpPrev;
+            dpPrev = dpCur;
+            dpCur = t;
         }
 
-        int answer = Math.max(dp[N][N][0], dp[N][N][1]);
-        System.out.println(answer);
+        // 장치 사용하지 않은채로 NN에 도달한 경우
+        for(int m = 0; m<maxMask; m++){
+            if(dpPrev[N][m] == INF)
+                continue;
+            if(dpPrev[N][m] > ans)
+                ans = dpPrev[N][m];
+        }
+
+        System.out.print(ans);
     }
 }
