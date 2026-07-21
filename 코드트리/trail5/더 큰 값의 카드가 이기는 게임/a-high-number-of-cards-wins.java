@@ -19,32 +19,75 @@ public class Main {
         return (int) sst.nval;
     }
 
+    // 다음에 사용할 idx 저장해놓고 find로 건너뛰는 방식
+    static int[] parent;
+    static int find(int x){
+        if(parent[x] == x)
+            return x;
+        return parent[x] = find(parent[x]);
+    }
+
+    // p < arr[idx]를 만족하는 최초 idx
+    static int ub(int p, int[] arr){
+        int l = 0;
+        int r = arr.length-1;
+        while(l<=r){
+            int mid = (l+r)/2;
+            if(arr[mid] <= p){
+                l = mid+1;
+            }
+            else
+                r = mid-1;
+        }
+        return l;
+    }
+
     public static void main(String[] args) throws IOException{
-        TreeSet<Integer> ts = new TreeSet<>();
+        //TreeSet<Integer> ts = new TreeSet<>();
         int N = read();
         boolean[] bb = new boolean[2*N+1];
         int[] bcard = new int[N];
+        parent = new int[N+1];
         for(int i = 0; i<N; i++){
             int cur = read();
             bb[cur] = true;
             bcard[i] = cur;
+            parent[i+1] = i+1;
         }
 
+        int[] acard = new int[N];
+        int ii = 0;
         for(int i =1 ; i<=2*N; i++){
-            if(!bb[i])
-                ts.add(i);
+            if(!bb[i]){
+                //ts.add(i);
+                acard[ii++] = i;
+            }
         }
 
+        Arrays.sort(acard);
         int ans = 0;
         for(int i = 0; i<N; i++){
             int cur = bcard[i];
-            Integer find = ts.higher(cur);
+            // TreeSet
+            // Integer found = ts.higher(cur);
+            // if(found != null){
+            //     ans++;
+            //     ts.remove(found);
+            // }
 
-            if(find != null){
+            // union-find
+            // 현재 b카드를 이기는 최소의 acard 찾기
+            int idx = ub(cur, acard);
+            // 가능한 최소 acard idx 찾기
+            idx = find(idx);
+            // 이기는 카드 없음
+            if(idx == N)
+                idx = find(0);
+            else
                 ans++;
-                ts.remove(find);
-            }
+            parent[idx] = find(idx+1);
         }
+
         System.out.print(ans);
     }
 }
