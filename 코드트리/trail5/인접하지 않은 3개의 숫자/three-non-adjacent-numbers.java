@@ -2,8 +2,16 @@ import java.util.*;
 import java.io.*;
 
 /*
+dp[N+1][4]
 dp[i][k] = i까지 처리했을때, 현재 선택 수가 k일때 최대 합
-dp[i][k] = max(dp[i-1][k-1], dp[i-2][k] + A[i])
+dp[i][k] = max(dp[i-1][k], dp[i-2][k-1] + A[i-1])
+-> 1-based dp
+
+---------------------
+합이 최대로 되도록 하려면
+최적의 선택은 
+0~i-2까지의 최대값 + A[i] + i+2~N-1까지의 최댓값
+
 */
 
 public class Main {
@@ -21,26 +29,20 @@ public class Main {
             A[i] = read();
         }
 
-        // 최대 3개 고르니까
-        int[][] dp = new int[N+1][4];
-        // 일단 전부 불가능상태 만들고
-        for (int i = 0; i <= N; i++) {
-            Arrays.fill(dp[i], Integer.MIN_VALUE / 2);
+        int[] p = new int[N+1];
+        int[] s = new int[N+1];
+        for(int i = 1; i<=N; i++){
+            p[i] = Math.max(p[i-1], A[i-1]);
         }
-        // 하나도 안 고른건 0임
-        for (int i = 0; i <= N; i++) {
-            dp[i][0] = 0;
+        for(int i = N-1; i>=0; i--){
+            s[i] = Math.max(s[i+1], A[i]);
         }
 
-        dp[1][1] = A[0];
-
-        for(int i =2; i<=N; i++){
-            for(int k = 1; k<=3; k++){
-                // 선택하지 않는경우, 현재 선택하는 경우(한칸 건너뛰기)
-                dp[i][k] = Math.max(dp[i-1][k], dp[i-2][k-1] + A[i-1]);
-            }
+        int ans = 0;
+        // prefix suffix 인덱스 의미 잘 생각하기
+        for(int i = 2; i<N-2; i++){
+            ans = Math.max(ans, p[i-1] + A[i] + s[i+2]);
         }
-
-        System.out.print(dp[N][3]);
+        System.out.print(ans);
     }
 }
