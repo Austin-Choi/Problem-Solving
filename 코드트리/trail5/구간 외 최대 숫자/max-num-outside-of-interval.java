@@ -23,10 +23,11 @@ public class Main {
         int[] s = new int[N+1];
         for(int i = 1; i<=N; i++){
             p[i] = Math.max(p[i-1], A[i-1]);
+            s[N-i] = Math.max(s[N-i+1], A[N-i]);
         }
-        for(int i = N-1; i>=0; i--){
-            s[i] = Math.max(s[i+1], A[i]);
-        }
+        // for(int i = N-1; i>=0; i--){
+        //     s[i] = Math.max(s[i+1], A[i]);
+        // }
 
         StringBuilder sb = new StringBuilder();
         while(Q-->0){
