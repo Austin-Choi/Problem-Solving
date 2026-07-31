@@ -27,11 +27,8 @@ public class Main {
         }
 
         // 종료 이벤트를 먼저 처리해야 컴퓨터 쓸수있음
-        Arrays.sort(event, (a,b)->{
-            if(a[0] != b[0])
-                return a[0] - b[0];
-            return a[1] - b[1];
-        });
+        // --> ??..
+        Arrays.sort(event, Comparator.comparingInt(a->a[0]));
 
 
         int cnt = 0;
