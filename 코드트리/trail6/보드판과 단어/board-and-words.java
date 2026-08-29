@@ -38,6 +38,8 @@ public class Main {
     static boolean[][] v = new boolean[4][4];
 
     static void dfs(int ci, int cj, int depth, Node cur){
+        if(depth > 8)
+            return;
         // 단어 완성됬을 때만 갱신
         if(cur.isEnd)
             maxLen = Math.max(maxLen, depth);
