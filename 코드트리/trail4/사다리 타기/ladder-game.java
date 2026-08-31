@@ -31,41 +31,25 @@ public class Main {
     // 최소로 갱신하기
     static int ans = 16;
     // 현재 수열 상태, 현재 사용한 가로줄, 현재 road idx
-    // N번 수열 상태 비교하지 말고 diff로 관리
-    static void bt(int[] cur, int cnt, int ci, int diff){
+    static void bt(int[] cur, int cnt, int ci){
         // 추가 가지치기 : cnt >= ans면 볼 필요 없음
         if(cnt >= ans)
             return;
 
-        if(diff == 0){
+        if(ci == M){
+            boolean same = true;
+            for(int i= 0; i<N; i++){
+                if(cur[i] != dest[i])
+                    return;
+            }
             ans = Math.min(ans, cnt);
             return;
         }
 
-        if(ci == M){
-            return;
-        }
-
-        bt(cur, cnt, ci+1, diff);
-
-        int idx = road[ci][0] -1;
-        // cur 상태에서 diff 측정
-        int before = 0;
-        if(cur[idx] != dest[idx])
-            before++;
-        if(cur[idx+1] != dest[idx+1])
-            before++;
-
+        bt(cur, cnt, ci+1);
+        
         cur = swap(cur, road[ci][0]-1);
-        // 가로선을 선택한(swap후) diff 측정
-        int after = 0;
-        if(cur[idx] != dest[idx])
-            after++;
-        if(cur[idx+1] != dest[idx+1])
-            after++;
-            
-        bt(cur, cnt+1, ci+1, diff-before+after);
-
+        bt(cur, cnt+1, ci+1);
         cur = swap(cur, road[ci][0]-1);
     }
 
@@ -93,13 +77,7 @@ public class Main {
             dest = swap(dest, idx);
         }
 
-        int diff = 0;
-        for(int i = 0; i<N; i++){
-            if(start[i] != dest[i])
-                diff++;
-        }
-
-        bt(start, 0, 0, diff);
+        bt(start, 0, 0);
         System.out.print(ans);
     }
 }
