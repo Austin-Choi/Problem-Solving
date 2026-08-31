@@ -32,6 +32,10 @@ public class Main {
     static int ans = 16;
     // 현재 수열 상태, 현재 사용한 가로줄, 현재 road idx
     static void bt(int[] cur, int cnt, int ci){
+        // 추가 가지치기 : cnt >= ans면 볼 필요 없음
+        if(cnt >= ans)
+            return;
+            
         boolean same = true;
         for(int i= 0; i<N; i++){
             if(cur[i] != dest[i]){
