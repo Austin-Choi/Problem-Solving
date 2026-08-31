@@ -8,6 +8,7 @@ import java.io.*;
 
 
 처음 배열 1,2,3,4를 가로줄을 만나면 swap을 진행하고 dfs그리고 swap 풀고
+가로줄의 부분집합을 적절히 선택해서 답 만들기
 */
 
 public class Main {
