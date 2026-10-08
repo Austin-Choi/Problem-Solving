@@ -1,6 +1,6 @@
 /*
 dp[i][j] = i~j중 가장 긴 팰린드롬의 길이 O(N^2)
-
+-> dp는 boolean으로 유지하고 어차피 true가 될때마다 ans 업데이트해도 될듯
 */
 import java.util.*;
 class Solution
