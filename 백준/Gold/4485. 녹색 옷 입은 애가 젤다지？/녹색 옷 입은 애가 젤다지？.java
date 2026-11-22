@@ -2,6 +2,7 @@
 * 상하좌우 움직이는거라 그거 고려해야함
 * 2번 예제가 위 오른쪽이 아니라 상하좌우 다쓰면 19나옴
 * dp가 아니라 다익스트라
+* deque로 하면 spfa에 가까운것
 * */
 import java.util.*;
 import java.io.*;
@@ -18,11 +19,11 @@ public class Main {
             Arrays.fill(dist[i], INF);
         }
         dist[0][0] = board[0][0];
-        Deque<int[]> q = new ArrayDeque<>();
+        PriorityQueue<int[]> q = new PriorityQueue<>(Comparator.comparingInt(a->a[2]));
         q.add(new int[]{0,0,board[0][0]});
 
         while(!q.isEmpty()){
-            int[] cur = q.pollFirst();
+            int[] cur = q.poll();
             int ci = cur[0];
             int cj = cur[1];
             int cd = cur[2];
