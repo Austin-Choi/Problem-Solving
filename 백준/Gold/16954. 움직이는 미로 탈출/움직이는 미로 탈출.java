@@ -6,7 +6,7 @@ import java.util.*;
 * -> 현재 벽, 다음 벽 위치는 사용 불가능
 * -> 어차피 64개니까 벽 위치 저장해서 할까
 * -> N-1,0에서 출발해서 0,N-1로 가기
-* 
+*
 * 레벨 단위 격자 그래프 bfs
 * */
 
@@ -24,7 +24,8 @@ public class Main {
 
         while(!q.isEmpty()){
             int size = q.size();
-            
+            boolean[][] v = new boolean[N][N];
+
             while(size-- > 0){
                 int[] cur = q.poll();
                 int ci = cur[0];
@@ -45,6 +46,9 @@ public class Main {
                         continue;
                     if(board[ni][nj] == '#')
                         continue;
+                    if(v[ni][nj])
+                        continue;
+                    v[ni][nj] = true;
                     q.add(new int[]{ni,nj,cd+1});
                 }
             }
