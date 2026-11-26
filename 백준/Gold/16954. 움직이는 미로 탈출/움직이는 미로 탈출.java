@@ -18,7 +18,7 @@ public class Main {
     static int[] di = {-1,-1,0,1,1,1,0,-1,0};
     static int[] dj = {0,1,1,1,0,-1,-1,-1,0};
 
-    static boolean bfs(int si, int sj){
+    static int bfs(int si, int sj){
         Queue<int[]> q = new ArrayDeque<>();
         q.add(new int[]{si,sj,0});
 
@@ -35,9 +35,9 @@ public class Main {
                 if(board[ci][cj] == '#')
                     continue;
                 if(cd > 7)
-                    return true;
+                    return 1;
                 if(ci == 0 && cj == N-1)
-                    return true;
+                    return 1;
 
                 for(int d = 0; d<9; d++){
                     int ni = ci + di[d];
@@ -61,25 +61,20 @@ public class Main {
             }
             Arrays.fill(board[0], '.');
         }
-        return false;
+        return 0;
     }
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         for(int i =0; i<N; i++){
-            char[] t = br.readLine().toCharArray();
-            for(int j = 0; j<N; j++) {
-                board[i][j] = t[j];
-            }
+            board[i] = br.readLine().toCharArray();
         }
+        
         if(board[N-1][0] == '#') {
             System.out.print(0);
             return;
         }
 
-        if(bfs(N-1, 0))
-            System.out.print(1);
-        else
-            System.out.print(0);
+        System.out.print(bfs(N-1,0));
     }
 }
